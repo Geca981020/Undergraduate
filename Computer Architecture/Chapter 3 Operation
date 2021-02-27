@@ -1,0 +1,23 @@
+chpater3 Operation
+
+- 덧셈과 뺄셈
+- add, addi, sub는 overflow 발생 시 에러 발생
+- addu, addiu, subu는 overflow 발생 시 에러를 발생시키지 않음.
+- C Language는 overflow 무시.
+
+- 곱셈
+- 곱셈의 대상(multiplicand), 곱하는 수(multiplier), 곱 결과(product)로 구성됨.
+<반복> 
+- multiplier의 LSB가 1이면 multiplicand를 product에 더한다.
+- multiplier의 LSB가 0이면 multiplicand를 product에 더하지 않는다.
+- multiplier를 right shift, multiplicand를 left shift 한다.
+
+- 나눗셈
+- 나눗셈의 대상(dividend), 나누는 수(divisor), 몫(Quotient), 나머지(Remainder).
+<초기>
+- divisor를 2배 확장 이후 반절 왼쪽에 삽입, dividend를 remainder에 삽입.
+<반복>
+- Rem = Rem - Div를 수행
+- Rem이 음수이면 Rem = Rem + Div 수행, Quot를 left shift하고 0을 삽입.
+- Rem이 양수이면 Quot를 left shift하고 1을 삽입.
+- Div를 right shift.

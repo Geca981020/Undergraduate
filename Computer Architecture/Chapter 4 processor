@@ -1,0 +1,81 @@
+4. 1 datapath
+- CPU에서 각종 연산을 담당하는 부분.
+- datapath는 2가지로 구성된다.
+- combinational element: 오직 현재 입력받은 값에 의해 결정. ex) ALU
+- state element: 기억소자를 가지고 있다. ex) register, memory
+- MIPS: PC, instruction memory, register file, data memory, ALU, Multiplexer 등
+
+4. 2 control
+- ALU: ALUOp(2bit) + Function field(6bit) = ALU Control(4bit)
+- ALU Control로 ALU 연산을 지정 ex) 0000 = AND, 0001 = OR, 0010 = ADD, ...
+- RegDst: register file의 write reg 지정.
+- RegWrite:register file의 쓰기 여부 결정.
+- PCSrc: PC+4와 Branch 값 중에서 PC 값 결정.
+- ALUSrc: ALU의 입력 값 결정.
+- MemRead: data memory 읽기 수행 결정.
+- MemWrite: data memory 쓰기 수행 결정.
+- MemtoReg: data memory, ALU 연산 값 중 register file에 쓸 값 결정.
+- Jump: Jump address로 PC 값을 바꿀지 안 바꿀지 결정.
+
+4, 3 pipelining
+- lw 명령어가 가장 길기 때문에 모든 명령어의 클럭 사이클은 최소 lw가 되어야 한다.
+  하지만 이것은 매우 비효율적이다. 그래서 processor 각 단계별로 쪼개고 각 단계 사이에 register를 추가한다. 이렇게 하면 각 단계가 모두 독립적으로 동시에 수행될 수 있다.
+- pipelining: 여러 개의 명령어를 동시에 처리하는 병렬처리의 핵심 개념.
+- pipelining의 성능 향상은 이상적일 때 pipelining의 단계 수에 비례한다.
+- pipelining은 명령어의 실행시간을 줄이는 게 아니라 처리량을 향상 시키는 것.
+
+4. 4 hazard
+- hazard: 파이프라이닝을 정상적으로 수행할 수 없을 때
+<Structural Hazard> 
+- 하드웨어가 지원을 하지 않아 발생
+- 해결방법: 고성능의 하드웨어로 부품을 교체 및 추가한다, stall.
+
+<Data Hazard>
+- 다음 명령어가 현재 또는 이전 명령어의 처리 결과를 필요로 하기 때문에 지연이 발생.
+- 해결방법: Forwarding, 명령어의 순서를 바꾼다, stall.
+
+<Control Hazard>
+- 분기 명령어에 의해 PC값이 상대적으로 바뀔 때 PC 값을 결정할 수 없어서 발생.
+- 해결방법: 예측, stall, delayed Branch
+
+4. 5 pipelining design
+- MIPS Execution step: IF -> ID -> EX -> MEM -> WB
+- pipelining register: 파이프라이닝 각 진행단계에서 값들을 저장.
+- 모든 명령어는 각 사이클마다 한 파이프라인 레지스터에서 다음 레지스터로 전진.
+
+4. 6 data hazard
+<발생조건>
+- EX/MEM.registerRd = ID/EX.registerRs
+- EX/MEM.registerRd = ID/EX.registerRt
+- MEM/WB.registerRd = ID/Ex.registerRs
+- MEM/WB.registerRd = ID/Ex.registerRt
+
+<전방 전달 유닛>
+- EX 단계에서 이루어짐.
+- 파이프라이닝 레지스터가 전방전달할 데이터를 가지고 있다.
+- ALU 입력전에 여러개의 멀티플렉서와 제어신호를 이용해 구축.
+
+<해저드 검출 유닛>
+- ID 단계에서 이루어짐.
+- lw와 같이 전방전달이 불가능할 경우 지연을 사용.
+- nop상태로 만들어 bubble을 추가한다.
+
+4. 7 control hazard
+<분기 실행을 ID단계에서 수행>
+- 분기를 굳이 MEM단계에서 수행하는게 아니라 exclusvie or 과 같은 몇 개의 소자로 앞에서 계산해버린다.
+
+<동적 분기 예측>
+- Branch Prediction Buffer: 분기 여부를 저장하고, 이 정보로 다음 분기 때 동적 결정 수행.
+
+4. 8 Exception
+- Exception: 프로그램 실행 도중 발생하는 예기치 못한 사건.
+- Interrupt: 프로그램 외적인 곳에서 오는 실행을 방해하는 것들.
+- EPC: 예외가 일어났던 명령어의 주소를 저장
+이후, 운영체제가 예외를 처리하여 프로그램을 재실행할지, 종료할 지를 결정하고 재실행하기로 하였다면, EPC를 이용하여 다음 실행할 명령어를 결정한다.
+
+<예외의 원인을 알아내기 위해 사용하는 2가지 방법>
+- Cause Register: 예외가 발생한 원인을 저장.
+- Vectored Interrupt: 제어가 옮겨가야 되는 주소를 예외의 종류에 따라 결정.
+
+- 예외를 제어해저드의 다른 형태로 취급하여 처리.
+- 한 클럭사이클에서 여러 개의 예외가 동시에 발생하면 우선순위를 주어서 해결. 

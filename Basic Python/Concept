@@ -1,0 +1,129 @@
+chapter1 파이썬 서론
+- 파이썬은 1991년 귀도 반 로섬이 개발.
+- 인터프린터 언어/파이썬 쉘/프롬프트/인터프리트 모드/스크립트 모드/문법,실행 오류
+- 파이썬 에서는 #으로 1줄 주석을, “”“~”“” 으로 여러 줄 주석을 표현
+- 파이썬은 / 로 여러 줄에 걸쳐 표현 가능.
+- code: print("Hello World")
+- code: import turtle / t = turtle.Turtle() / t.shape("turtle") / t. forward(100) /
+        t.left / t.right / t.width / t.color / t.up / t.down / t.goto[화면 중앙이 (0, 0)]          / t.circle
+
+chapter2 변수
+- 정의: 프로그램의 메모리 공간에 붙는 별칭.
+- 파이썬은 큰 따옴표처럼 작은따옴표로도 문자열 표현이 가능.
+- 영문자 숫자 밑줄 문자로 변수이름 구성 / 첫 글자 숫자x / 공백x / 대소문자 구별
+- code:input(int/str/float) 
+
+chapter3 연산자
+3. 1 연산자 종류
+- 수식(expression) = 연산자(operator) + 피연산자(operand)
+- 산술 연산자: +, -, *, 7/4 = 1.75, 7//4 = 1, %.
+- 지수 연산자: ** 다른 연산자보다 우선순위가 높고 오른쪽에서 왼쪽으로 계산.
+- 관계 연산자: ==, !=, >, >=, <, <=
+- 논리 연산자: and, or, not 
+- 비트 연산자: &, |, ^, ~, <<, >>
+- 할당 연산자: =. +=. -=. *=. /= ...
+
+3. 2 연산자 우선순위
+1) 증감 연산자
+2) 단항 연산자
+3) 산술 연산자
+4) 시프트 연산자
+5) 비트 연산자
+6) 관계 연산자
+7) 할당 연산자
+
+chapter4 자료형 -> 정수, 실수, 문자열
+4. 1 자료형
+- 파이썬은 자료형을 지정해 줄 필요가 없다.
+- 변수의 자료형은 type()을 사용하여 알아 볼 수 있다.
+
+4. 2 Number
+- 파이썬 표준 데이터 형식: Number, String, List, Tuple, Dictionary
+- Number: int, long(int보다 긴 정수, 끝 L 붙임), float, complex(복소수).
+- String: []로 문자열 하위집합 표현 가능, + 문자더하기, * 문자 반복.
+- code: print("%s의 가격은 %s원입니다." %(name, price))
+
+4. 3 String
+- index: 0~11 or -12~-1
+- 문자열의 길이는 len() 함수로 표현
+- escape sequence: \n, \t, \\, \", \'
+
+4. 4 List
+list1 = ['abcd', 786, 2.23, 'john', 70.2]
+- 리스트는 복합데이터를 나타내는데 가장 유용하다.
+- 리스트내의 항목들은 쉼표로 구별하고, 사각 괄호 안에 포함된다.
+- list1[] or list[:] 로 전체 접근, list1[1], list[1:3] 등으로 부분 접근.
+- + 기호는 리스트 연결, * 기호는 리스트 반복.
+- code: list1.append(1)
+
+chapter5 조건문
+- 파이썬은 { } 대신 tab, 띄어쓰기로 블록을 구별, 그러니 블록을 매우 정확하게 표현하자.
+- if else / if elif else / 중첩된 if문 / 파이썬은 switch문이 없다.
+
+chapter6 반복문
+- 횟수 반복: for / 조건 반복: while
+- range(start, stop, step): start부터 stop-1까지 step 간격으로 number 생성.
+- for i in range(5): print(i) == for i in [1, 2, 3, 4, 5]: print(i) 
+- while 조건: 반복 문장 / break, continue 사용 가능
+- 파이썬에서 ;을 사용하면 한 줄에 여러 개의 statement를 적을 수 있다.
+
+chapter7 함수
+7. 1 정의
+- 함수: 특정한 기능을 수행할 수 있도록 만들어진 코드와 데이터의 묶음.
+- 모듈: 함수나 변수 또는 클래스를 모아 놓은 파일.
+
+7. 2 선언
+- def print_address(name): ~~~ / main에서 print_address(name)로 사용.
+- 전달되는 값을 argument, 값을 받는 변수를 parameter
+- 값을 반환할 때는 return
+
+7. 3 변수의 범위
+- 함수 안에서 선언된 변수 local variable, 함수 외부에서 선언된 변수 global variable
+- 함수 안의 지역변수를 전역변수와 같은 이름으로 사용하면 함수는 지역변수를 사용한다.
+  전역변수를 사용하고 싶다면 global keyword를 사용하자.
+- default argument: 함수의 매개변수를 기본 값을 가지도록 할 수 있다.
+  ex) def greet(name, msg = "Hello!"): ~~~
+ - keyword argument: 함수를 호출 할 때 함수의 parameter를 지정한다.
+  ex) calc(x=10, y=20, z=30)
+
+chapter8 리스트, 튜플, 딕셔너리
+8. 1 리스트
+- 파이썬에서 모든 것은 객체이다. 객체 안의 함수를 사용하기 위해서 . 연산자 사용.
+- 슬라이싱(slicing): 리스트에서 한 번에 여러 개의 항목을 추출하는 방법.
+- 삽입: insert(index, item): index 자리에 item을 삽입한다.
+- 제거: remove(item): item을 제거./del heroes[0]: 인덱스로 제거/pop(): 마지막항목제거.
+- 검색: index(item): item의 인덱스 반환
+- sort(): 정렬 수행 / newlist = sorted(numbers,reverse=TRUE): 새로운 리스트 생성 정렬
+
+8. 2 튜플
+- 리스트와 유사/ ()괄호로 표현/ 인덱스 접근은 []로 수행
+- 리스트와 다른 점은 튜플은 읽기 전용, 튜플은 수정 불가능 
+- t1 = (1,):원소 한 개는 콤마를 반드시 붙여야 한다.
+- t1 = 1, 2, 3처럼 ()생략이 가능 하다.
+
+8. 3 딕셔너리
+- value와 key로 구성/ {}중괄호로 표현/인덱스접근은 []로 수행
+- 삽입: phone_book = {}, phone_book["hong gil dong"] = "010-1234-5678", : 로 구분
+- 검색: print(phone_book[key])/phone_book.keys()/phone_book.values()
+- 삭제: del phone_book[key]/phone_book.clear(): 모든 항목 삭제.
+- 주의할 점: key는 고유해야 한다. / list는 key로 못쓰지만 tuple은 key로 사용 가능.
+
+chapter9 파일 입출력
+9. 1 open, close
+- infile = open(파일이름, 모드) 
+- infile.close()
+- mode: r, w, a, r+ <C언어와 동일>
+
+9. 2 파일 입출력
+- 파일 전체 읽기: lines = infile.read() / lines = infile.readlines()
+- 파일 한줄 읽기: lines = infile.readline.rstrip() / rstrip(): \n 제거
+- 파일 단어 읽기: word_list = lines.split() / split() 공백문자로 문자열 분리
+- 파일 한줄 쓰기: outfile.write("hong gil dong\n")
+
+chapter10 객체(Object)
+- 파이썬은 객체지향언어로 모든 것이 객체(함수, 데이터 묶음)로 구성되어있다.
+- class의 method 첫 번째 매개변수는 항상 self로 현재 객체를 가리킨다.
+- 객체를 생성하면서 초기화(생성자) 하는 건 __init__()를 정의해서 사용.
+- 객체를 print할 때 정보를 보여주기 위해 __str__()을 정의해서 사용. / return msg
+- self는 어떤 객체가 메소드를 호출했는지를 알려준다.
+- 상속: class MyTurtle(Turtle): Turtle를 상속 받아 MyTurtle를 정의.

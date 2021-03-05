@@ -1,0 +1,24 @@
+[1] Definition
+- proposition: 객관적인 기준으로 참 거짓을 명백하게 구별할 수 있는 문장이나 식.
+- truth value: T, F 
+- logical operation: and, or, not, xor
+- compound proposition: logical operation으로 결합 된 proposition들.
+- tautology: 항상 T인 명제.
+- contradiction: 항상 F인 명제.
+- Contingency: tautology도 아니고, contradiction도 아닌 명제.
+- condiction propostion: p -> q 
+  여기서 p는 가정이고, q는 결론이다.
+- 논리 연산자 우선 순위: () => not => and => or => -> => <->
+- basic: p -> q
+  converse: q -> p
+  inverse: ~p -> ~q
+  contraposition: ~q -> ~p
+  basic과 contraposition은 그 truth value와 truth table이 같다.
+
+[2] Proposition Function
+- Propostion Function: 변수 x를 포함하여 변수의 값에 따라 truth value가 달라지는 문장이나 수식.
+- Domain of Distance: 변수 x가 가질 수 있는 값들의 범위.
+- Universe Quantifier: 변수 앞에 붙는 한정자로 모든을 의미.
+- Existential Quantifier: 변수 앞에 붙는 한정자로 어떤을 의미.
+- Binding Variable: Proposition Function에 속한 변수 중 Quantifier로 선택된 변수. 
+- Free Variable: Proposition Function에 속한 변수 중 Quantifier로 선택되지 않은 변수.

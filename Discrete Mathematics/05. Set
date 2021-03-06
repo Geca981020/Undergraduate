@@ -1,0 +1,20 @@
+[1] Definition
+- Set: 어떤 기준에 의해 분리되어 공통된 성질을 가지는 원소들의 모임.
+- 집합의 표기방식: 원소나열법, 조건제시법, 벤다이어그램
+- cardinality: 집합 원소의 개수.
+- finite set. infinite set: 원소의 개수가 각각 유한개 무한개.
+
+[2] Kind
+- Universal Set: 전체 집합.
+- Empty Set: 원소가 0개인 집합.
+- Equal: 두 집합 A와 B에 속한 원소가 모두 같을 때.
+- Subset: 한 집합의 원소가 다른 집합에 모두 해당 될 때.
+- Proper Subset: Subset이면서 A와 B가 상등이 아닌 경우,
+
+[3] Operation
+- 합집합, 교집합, 서로소(disjoint), 차집합, 대칭차집합, 여집합(complement). 곱집합
+- 멱집합(power set): 한 집합에 모든 가능한 부분집합을 원소로서 갖는 집합.
+
+[4] Partition
+- 집합을 중복되지 않고 모든 원소를 포함하도록 여러 개의 부분집합을 잘게 쪼갠 것.
+- 잘게 쪼개진 각각의 집합들을 Set class라고 부른다.

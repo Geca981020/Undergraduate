@@ -1,0 +1,32 @@
+Chapter7 Relation
+[1] Definition
+- Relation: 집합A에서 집합B로의 원소와 원소의 연결.
+- Domain: 정의역
+- Codomain: 공변역
+- Range: 치역
+
+[2] Expression
+- Arrow Diagram
+- Coordinate Diagram
+- Relation Matrix
+- Directed Graph
+
+[3] Reflexible, symmetric, transitive
+- Reflexible Relation: 모든 (a, a)를 가지는 관계
+- Irreflexible Relation: 모든 (a, a)를 가지고 있지 않는 관계
+- Symmetric Relation: 모든 (a, b)에 대해 (b, a)를 가지고 있는 관계
+- Asymmetric Relation: 모든 (a, b)에 대해 (b, a)를 가지면 a=b인 관계
+- Transitive Relation: (a, b)가 있고, (b, c)가 있으면, (a, c)가 존재하는 관계
+
+[4] composition relation
+- 집합 A->B로의 관계와 B->C로 가는 관계가 있을 때 이 둘을 합성해 만든 A->C로 가는 관계.
+
+[5] Closure
+- 관계의 성질을 만족시키기 위해 순서쌍을 새로 추가한 관계.
+- Reflexible Closure
+- Symmetric Closure
+- Transitive Closure
+
+[6] Equivalence Relation, Partial Order Relation
+- Equivalence Relation: Reflexible, Symmetric, Transitive를 모두 만족하는 관계.
+- Partial Order Relation: Reflexible, Asymmetric, Transitive를 모두 만족하는 관계.

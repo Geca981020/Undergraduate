@@ -1,0 +1,20 @@
+[1] Definition
+- A->B로 가는 관계 중 A의 모든 원소가 B의 단 하나의 원소와 반드시 결합하는 관계.
+- 원상(Preimage): 집합 B의 원소 b와 대응하는 집합 A의 원소 a.
+- 상(Image): 집합 A의 원소 a와 대응되는 집합 B의 원소 b.
+- 정의역, 공변역, 치역
+
+[2] Characteristic
+- Injective Function: 정의역의 모든 원소들이 서로 다른 공변역 원소와 대응.
+- Subjectvie Function: 공변역의 모든 원소들이 한 개 이상의 정의역과 대응.
+- Bijective Function: 단사함수이면서 전사함수인 함수.
+
+[3] Composition Function
+
+[4] Kinds
+- Identity Function: f(a) = a
+- Inverse Function: 전단사함수여야 한다.
+- Constant Function: 정의역의 모든 원소가 공역의 단 하나의 원소랑 결합.
+- Characteristic Function: 특정 조건에 따라서 1과 0으로 구별된느 함수.
+- Floor Function
+- Ceiling Function

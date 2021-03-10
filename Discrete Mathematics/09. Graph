@@ -1,0 +1,25 @@
+Chapter9 Graph
+[1] Definition
+- Node와 Edge의 집합으로 만들어진 구조.
+- multi graph: 두 node 사이에 2개 이상의 edge가 있는 그래프.
+- Directed graph: edge가 화살표가 되어 방향성을 알려주는 그래프.
+- weighted graph: 각 edge에 가중치가 부여된 그래프.
+- degree: 꼭짓점에 근접하는 모서리의 수.
+ Out degree, In degree가 잇다.
+- degree의 전체 합은 edge의 2배이다.
+- degree가 홀수인 꼭짓점의 수는 짝수이다.
+ 
+[2] Kinds
+- sub graph: 꼭짓점과 에지가 모두 부분 집합.
+- spannig graph: 꼭짓점은 같으며 에지가 부분 집합. 
+- Isomorphic Graph: 꼭짓점과 에지가 모두 같은 집합.
+- Planar Graph: 꼭짓점에서만 만나고 에지에서는 겹치지 않는 그래프.
+- Connected Graph: 모든 꼭짓점들이 에지로 연결된 그래프.
+- Complete Graph: 모든 n개의 꼭짓점들이 모두 에지로 연결된 그래프.
+- Regular Graph: 각 꼭짓점들이 동일한 차수를 가지고 있는 그래프.
+- Bipartite Graph: 꼭짓점을 중복이 아닌 두 부분집합으로 나누고 임의의 에지로 연결
+- Complete Bipartite Graph: 꼭짓점을 중복이 아닌 두 부분집합으로 나누고 모두 에지로 연결.
+
+[3] Repression
+- Adjacency Matrix
+- Adjacency List

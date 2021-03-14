@@ -1,0 +1,79 @@
+2. 1 definition
+- 배열은 그 자체가 자료구조인 동시에 다른  ADT의 구현에도 사용된다.
+- ADT: 새로운 배열을 생성, 값을 추출하는 연산, 저장 연산
+- 배열은 연속되는 메모리 공간에 생성됨.
+- struct도 연속된 저장공간을 가진다. 하지만 메모리의 효율적 사용을 위해 빈 공간을 중간에 두거나, 채워넣기를 할 수 도 있다.
+
+- calloc: 사용자가 지정한 양의 메모리를 할당하고 할당된 메모리를 0으로 초기화.
+- realloc: malloc 나 calloc로 이미 할당된 메모리 크기를 재조정,
+
+- 자기 참조 구조(self-referential structure): 구성 요소 중에 자기 자신을 가리키는 포인터가 1개 이상 존재하는 구조.
+
+ex)	typedef struct{
+		char data;
+		struct list *link;
+	}list;
+	list item1, item2, item3;
+	item1.data = 'a'; item2.data = 'b'; item3.data = 'c';
+	item1.link = item2.link = item3.link = NULL:
+	item1.link = &item2;
+	item2.link = &item3;
+
+2. 2 다항식(Polynomial[multinomial] expression)
+- 다항식은 지수, 계수, 변수로 구성되며, 가장 큰 지수를 차수(degree).
+
+- polynomial expression first declaration
+	typedef struct Polynomial1{
+		int degree;
+		float coef[100];
+	};
+  
+  degree에 차수를 저장하고, coef 배열에 계수를 저장.
+  중간에 0이 많으면 쓸모 없는 데이터를 저장하므로 메모리 사용 면에서 효율성 낮음.
+
+- polynomial expression second declaration
+	typedef struct Polynomial2{
+		float coef;
+		int exp;
+	};
+	Polynomial2 term[100];
+	int avail = 0; // 다항식을 저장하고 끝 값.
+  
+- 0이 없는 다항식이면 1 방법보다 2배의 저장공간을 요구하게 됨.
+
+- polynomial expression add function
+void(int sa, int fa, int sb, int fb, int *sd, int *fd){
+	float coef;
+	*sd = avail;
+	while(sa <= fa && sb <= fb){
+		switch(COMPARE(terms[sa].exp, terms[sb].exp)){
+			case -1:
+				attach(terms[sb].coef, terms[sb].exp);
+				sb++;
+				break;
+			case 0:
+				coefficient = temrs[sa].coef + terms[sb].coef;
+				if(coef)
+					attach(coef, terms[sa].exp);
+				sa++; 
+				sb++;
+				break;
+			case 1:
+				attach(terms[sa].coef, terms[sa].exp);
+				sa++;			
+		}
+	}
+	for(; sa <= fa; sa++){
+		attach(terms[sa].coef, terms[sa].exp);
+	}
+	for(; sb <= fb; sb++){
+		attach(terms[sb].coef, terms[sb].exp);
+	}	
+	*fd = avail-1;
+}
+
+- polynomial expression attach function
+void attach(float coef, int exp){
+	terms[avail].coef = coef;
+	terms[avail++].exp = exp;
+}

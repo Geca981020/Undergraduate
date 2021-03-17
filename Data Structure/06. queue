@@ -1,0 +1,24 @@
+3. 3 Queue
+- 한쪽 끝에서 삽입이 일어나고 반대 쪽 끝에서 삭제가 일어나는 순서리스트.
+- 새로운 원소가 삽입되는 끝을 rear이라 하고, 삭제되는 끝을 front라고 한다.
+- 이러한 큐를 선입선출(FIFO: First In First Out)이라고 부른다.
+- 주로 원형 큐를 많이 사용하며 운영체제의 작업스케줄링에 우선순위 큐가 사용된다.
+
+// queue
+int queue[MAX_SIZE];
+int front = 0, rear = 0;
+addq(int item){
+	rear = (rear+1)%MAX_SIZE;
+	if(front == rear) //ERROR MESSAGE;
+	gueue[rear] = item;
+}
+deleteq(){
+	if(front == rear) return ERROR MESSAGE;
+	front = (front + 1)%MAX_SIZE;
+	return queue[front];
+}
+Ex) addq(1); addq(2); addq(3); 
+a = deleteq(); b = deleteq();
+addq(4);addq(5);
+
+3. 4 Dynamic Allocation Queue

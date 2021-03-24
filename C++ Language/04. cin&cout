@@ -1,0 +1,19 @@
+#include <iostream>
+
+using std::cin;
+using std::cout;
+using std::endl;
+
+int main()
+{
+	double radius, volume;
+
+	cout << "Enter a radius and PI: ";
+	double PI;
+	cin >> radius >> PI;
+
+	volume = (4.0/3)*PI*radius*radius*radius;
+	cout << "The volume is " << volume << endl; 
+
+	return 0;
+}

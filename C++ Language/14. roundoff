@@ -1,0 +1,44 @@
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+//int roundoff(double dv); // int roundoff(double);
+void roundoff(double dv);
+
+int main()
+{
+//--- 정수형 반올림 계산
+	double dv;
+	char ans;
+
+	do{
+		cout << "Enter a number: ";
+		cin >> dv;
+
+		cout << "Round off number: ";
+		// a = roundoff(dv); // void형 X
+		//cout << roundoff(dv) <<endl;
+		roundoff(dv); //void형, 명령문 처럼
+		cout << "Again? (y/n): ";
+		cin >> ans;
+	} while(ans == 'y'|| ans == 'Y');
+
+	return 0;
+}
+
+void roundoff(double dv){
+//	int a;
+//	a = static_cast<int>(floor(dv+0.5));
+//	return a;
+	cout << (static_cast<int>(floor(dv+0.5))) <<endl;
+}
+
+//int roundoff(double dv){
+//	int a;
+//	a = static_cast<int>(floor(dv+0.5));
+//	return a;
+
+//	return (static_cast<int>(floor(dv+0.5)));
+//
+}

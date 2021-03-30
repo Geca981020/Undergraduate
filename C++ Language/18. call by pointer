@@ -1,0 +1,38 @@
+#include <iostream>
+
+using namespace std;
+void print_data(int num1, int num2);
+void swap_data(int &data1,int &data2);
+void get_data(int *p,int *q);
+
+int main()
+{
+	int first, second;
+	
+	get_data(&first, &second);
+	swap_data(first, second);
+	print_data(first, second);
+
+	return 0;
+}
+
+void print_data(int num1, int num2)
+{
+	cout << "After swap: " << num1 << "" << num2 << endl;
+}
+
+void swap_data(int &data1,int &data2)
+{
+	int temp;
+	temp = data1;
+	data1 = data2;
+	data2 = temp;
+}
+
+void get_data(int *p,int *q)
+{
+	int first, second;
+	cout <<"Enter two numbers: ";
+	cin >> *p >> *q;
+	cout << "Before swap: " << *p << "" << *q << endl;
+}

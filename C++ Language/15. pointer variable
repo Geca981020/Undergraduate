@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	int var1 = 10, var2 = 20;
+	int &ref1 = var1;
+
+	ref1 = 30;
+	cout << var1 << endl;
+	cout << ref1 << endl;
+//	int &ref2; // 대상이 없기 때문에 오류 발생.
+//	&ref1 = var2;// 대상은 바꿀 수 없기에 오류 발생.
+//	int &ref2 = var1+var2; //식에서는 오류 발생.
+//	int &ref2 = 3; //오류 발생.
+
+// 포인터변수
+	int *p;
+	p = &var1;
+	cout << *p << endl;
+	p = &var2;
+	cout << *p << endl;
+	
+	
+	return 0;
+}

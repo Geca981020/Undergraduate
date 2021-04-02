@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+double sum(int num1, int num2 = 0, double num3 = 0);
+
+int main()
+{
+	int first, second;
+	double third;
+	
+	cout <<"Enter three numbers: ";
+	cin >> first >> second >> third;
+
+	//overload and default operator
+	cout << "The sum of two numbers= " << sum(first) << endl;
+	cout << "The sum of two numbers= " << sum(first, second) << endl;
+	cout << "The sum of three numbers= " << sum(first, second, third) << endl;
+	
+	return 0;
+}
+
+//double sum(int num1, int num2=0, double num3=0) 오류
+double sum(int num1, int num2, double num3)
+{
+	return (num1 + num2 + num3);
+}

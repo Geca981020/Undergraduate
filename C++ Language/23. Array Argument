@@ -1,0 +1,39 @@
+#include <iostream>
+
+using namespace std;
+
+void print_defference(int max,int data);
+int find_max(int list[], int size);
+
+int main()
+{
+	int i, max, sc[5];
+
+	cout << "Enter 5 numbers: ";
+	for(i=0; i<5; i++)
+		cin >> sc[i];
+	// 인자로서 배열 전체를 전달
+	max = find_max(sc, 5);
+	cout << "Max = " << max << endl;
+
+	// 인자로서 각 배열의 요소를 전달
+	cout << "Defferences" << endl;
+	for(i=0; i<5; i++)
+		print_defference(max,sc[i]);
+	
+    return 0;
+}
+
+void print_defference(int max,int data)
+{
+	cout << (max-data) << endl;
+	
+}
+
+int find_max(int list[], int size)
+{
+	int max = list[0];
+	for(int i=0; i<size; i++)
+		if(list[i]>max) max = list[i];
+	return max;
+}

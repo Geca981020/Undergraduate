@@ -1,0 +1,54 @@
+#include <iostream> // 함수의 매개변수, 리턴값
+       // 함수의 레퍼런스
+
+using namespace std;
+
+struct Accnt{
+ int number;  //계좌번호
+ char name[10]; //예금주
+ double value; //잔액
+};      // } p1, p2;
+
+//void Input_Accnt(Accnt &p);
+Accnt Input_Accnt();
+void output_Accnt(Accnt p);
+
+int main()
+{
+ Accnt p1, p2; // struct Accnt p1, p2;
+
+ //입력
+ //Input_Accnt(p1);
+ p1 = Input_Accnt();
+
+ p2 = p1;
+
+ //출력
+ output_Accnt(p2);
+
+ return 0;
+}
+
+//void Input_Accnt(Accnt &p) // call-by-reference
+Accnt Input_Accnt()
+{
+ Accnt p;
+
+ cout << "ID = ?";
+ cin >> p.number;
+ 
+ cout << "Name = ?";
+ cin >> p.name;
+ 
+ cout << "Balance = ?";
+ cin >> p.value;
+
+ return p;
+}
+
+void output_Accnt(Accnt p)
+{
+ cout << "ID = " << p.number << endl;
+ cout << "Name = " << p.name << endl;
+ cout << "Balance = " << p.value << endl;
+}

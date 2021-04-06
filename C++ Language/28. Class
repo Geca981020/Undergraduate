@@ -1,0 +1,58 @@
+#include <iostream> // 클래스화, public, private
+       
+using namespace std;
+
+class Accnt{
+
+private:
+	int number;  //계좌번호
+	char name[10]; //예금주
+	double value; //잔액
+
+public:
+	void Input_Accnt(){
+		cout << "ID = ?";
+		cin >> number;	// cin >> p1.number; 오류:구조체 정의에 구조체 특정변수를 포함
+		cout << "Name = ?";
+		cin >> name;
+		cout << "Balance = ?";
+		cin >> value;
+	}
+	
+	void add_value(int a){
+		value += a;
+	} 
+
+	int get_value(){
+		return value;
+	}
+
+	void output_Accnt(){
+		cout << "ID = " << number << endl;
+		cout << "Name = " << name << endl;
+		cout << "Balance = " << value << endl;
+	}
+};      
+
+int main()
+{
+	Accnt p1, p2; // struct Accnt p1, p2;
+
+	//입력
+	p1.Input_Accnt();
+	p2.Input_Accnt();
+ 
+	//잔액 증가
+	int a=50;
+	p1.add_value(a);
+
+	//잔액 가져오기
+	int b;
+	b=p1.get_value();
+	cout << b << endl;
+	//출력
+	p1.output_Accnt();
+	p2.output_Accnt();
+
+ return 0;
+}

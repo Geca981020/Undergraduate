@@ -1,0 +1,37 @@
+Chapter2 Agent
+2. 1 정의
+- 외부 환경에서 Percepts(지각)을 주면 Sensors가 받고, 이를 처리하여 Actuators로 환경에 Actions을 취한다.
+- Action은 현재 뿐만 아니라 과거에 있었던 모든 경험도 고려하는 것.
+- Rational Agents[AI]: percept sequence가 제공하는 정보와 에이전트가 기존에 가지고 있던 knowledge를 고려하여, 성능측정이 최대화 될 것으로 예상되는 행동을 취하는 것.
+
+2. 2 Task Environment
+- Rational Agent를 설계-구축 할려면, Task Environment를 지정 및 정의 해야 한다.
+- PEAS: Performance measure, Environment, Actuators, Sensors 
+- 팩맨: Score, Maze&ghosts, 움직임 신호&키보드를 누르는 팔, 이미지 인식기&카메라
+ 
+2. 3 Environment Types
+- Fully Observable vs Partially Observable: 전체 관찰 vs 일부만 관찰
+- Single agent vs multi agent(Competitive, Cooperative)
+- deterministic vs stochastic
+  다음의 환경상태는 현재의 환경상태와 에이전트의 행동에 의해 완전히 결정되는가?
+  ex) chess vs card game
+- Episode vs Sequential
+  앞의 결과가 뒤에 영향을 미치는가?
+  ex) image classification vs chess
+- Static vs Dynamic
+  에이전트가 고민하는 동안 환경이 변하는가?
+  ex) 스도쿠 vs 자율주행자동차
+- Discrete vs Continuous
+  한정된 수의 가능한 상태의 환경상태가 있는가?
+  ex) 체스 vs 자율주행자동차
+
+2. 4 Agent type
+- simple reflex agent: 현재 지각을 바탕으로 행동 선택, 과거랑 미래고려 X
+- model based reflex agent: 지금 볼 수 없는 세계를 추적, 
+  Model을 state라고 부르며 state에는 node와 graph가 포함된다.
+- goal based agent: 환경의 상태를 아는 것만으로도 부족 할 수 있음, 골목표추가.
+- utility based agent: 목표만으로 부족할 수 있다, 성과 측정을 내재화한다.
+
+- 위 4가지 agent는 learning agents로 전환 시킬 수 있다.
+- 지도학습과 강화학습의 가장 큰 차이는 feedback을 주는 시기이다.
+- 데이터를 바탕으로 계속 학습시켜 변화해 나간다.

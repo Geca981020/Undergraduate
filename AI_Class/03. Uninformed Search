@@ -1,0 +1,72 @@
+chapter3 Uninformed Search
+3. 1 Problem Type
+- Deterministic, Fully Observable => Single state problem
+  Agent가 정확히 어떤 상태인지 알 고 있다, 솔루션은 sequence이다.
+
+- Non Observable => Conformant problem(적합 문제)
+  Agent의 상태를 모를 수 있다. 솔루션은 sequence이다.
+
+- Nondeterministic and/or partially observable => Contingency problem(우발성 문제)
+  contingent한 계획과 정책이 필요.
+
+- unknown state space => Exploration problem
+ ex) 슬롯머신
+  
+3. 2 single state problem
+- problem은 state, successor function, start state, goal state로 정의된다.
+  state: 현재 나를 둘러 싸고 있는 환경 / successor function: move, cost, etc...
+- solution은 action에 대한 sequence로 나온다.
+- search란 problem을 input으로 solution을 output으로 주는 솔루션을 찾아가는 과정이다.
+- 이 세상은 복잡하기 때문에 추상화를 해야 한다.
+
+3. 3 searching for solutions
+- search tree
+  루트노드에서 시작/노드는 state/에지는 action&cost
+- state vs node
+  state란 물리적 구성이고, node란 search tree를 구성하는 데이터 구조이다.
+  state는 부모, 자식, 깊이 등이 없고, 두 개의 다른 node가 같은 state를 가질 수 있다.
+
+3. 4 search criteria
+- Completeness(완전성): 해결책이 존재하는 경우 찾을 수 있는가?
+- Optimality(최적성): 최소비용솔루션을 찾았는가?
+- Time Complexity: 생성/확장된 노드의 수
+- Space	 Complexity: 메모리의 최대 노드의 수
+
+- n: 문제의 상태 수
+- b: 검색트리의 최대 분기 수
+- d: 최소비용 솔루션의 깊이
+- m: 검색 트리의 최대 깊이
+
+
+3. 5 Search Strategies
+- 각 전략은 노드 확장 순서에 따라 달라진다.
+- Uninformed strategies (Blind Search, 맹목적 탐색)
+
+1. Breadth first Search
+- 가장 얇고 확장되지 않는 노드 탐색
+- Queue를 이용해서 구현
+
+
+2. Depth first Search
+- 가장 깊은 노드를 먼저 확장
+- stack을 이용해서 구현
+
+
+3. Depth limit Search
+- L로 깊이 제한 후 DFS 수행
+
+
+4. Iterative deepening search
+- IDS는 DFS를 서브루틴으로 사용한다.
+- 길이 1 이하의 경로를 모두 탐색 => 2 이하의 경로 탐색 => 반복
+
+
+5. Uniform cost Search
+- BFS는 전환횟수측면에서 최단경로를 찾는다, 최소비용 경로를 찾지 못한다.
+- BFS를 일반화, 가장 저렴한 노드를 먼저 확장, 우선순위 큐로 구현.
+
+- C*: 최적 솔루션의 비용
+- 앱실론: 모든 행동의 비용의 최소
+- f(n) cost function: 각 노드에 적용된 비용함수.
+- Pros: 완전하고 최적
+- Cons: 모든 방향에서 옵션을 탐색, 목표에 대한 정보가 없음.

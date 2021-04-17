@@ -1,0 +1,24 @@
+chapter4 Informed Search(정보이용탐색)
+4. 1 Informed Search
+1. Best First Search
+- 각 노드에 대하여 evaluation function:f(n)(desirability:바람직함 추정치)을 사용.
+- 가장 바람직한 확장되지 않은 노드를 확장.
+  
+2. Greedy (Best First)Search
+- 목표에 가장 가까운 것으로 보이는 확장되지 않은 노드를 확장.
+- Evaluation function f(n) = h(n): heuristic(휴리스틱)
+- 휴리스틱: 최적, 완벽, 합리적이라고 보장되지는 않지만 즉각적인 목표에 도달하기에 충분한 실용적인 방법.
+- ex) 한 지점에서 다른 지점까지의 가장 가까운 지점의 노드들을 선택.
+
+
+3. A*
+- 비용이 많이 드는 경로의 확장을 방지.
+- Evaluation function: f(n) = g(n) + h(n).
+- g(n): n에 도달하기 위한 지금까지의 비용. <경로비용함수> uniform-cost
+- h(n): n에서 목표에 이르는 예상 비용. <목표근접함수> best-first
+- f(n): n을 통해 목표에 이르는 경로의 총 예상비용.
+
+
+4. 2 Admissible Heuristics
+- h(n) <= h*(n): 가장 가까운 목표에 대한 실제 비용. 
+- 중요 목표를 향해 확장되고, 이때 h가 admissible 해야 한다.

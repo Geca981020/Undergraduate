@@ -1,0 +1,32 @@
+5chapter Adversarial Search
+5. 1 Deterministic Single Player
+- Deterministic, single player, perfect information
+ex) 8puzzle, 루빅 큐브
+- 각 노드는 가치를 저장한다.
+- search 이후, 최저그이 노드로 이어지는 이동을 선택할 수 있음.
+
+5. 2 Multi-Agent Games
+- Zero Sum Games
+에이전트는 반대의 유틸리티를 가지고 있다. 하나는 최대화, 하나는 최소화, 경쟁
+- General Games 
+에이전트는 서로 독립적인 유틸리티를 가지고 있다. 협력, 무관심, 경쟁 모두 가능
+
+5. 3 Deterministic Two Player
+- tic-tac-toc, ch
+ess: Zero Sum games
+- Minimax search로 해결.
+  state space search tree, 플레이어를 교체
+
+5. 4 Minimax value
+- 각 노드마다 minimax값이 있고, 두 플레이어가 게임이 끝날 때까지 최적으로 플레이 한다고 가정할 때 해당 상태에 있는 유틸리티.
+- 완전한 DFS를 수행.
+
+
+5. 5 alpha-beta pruning
+- 최종결정에 영향을 주지않는 가지를 잘라낸다.
+- 알파 = 우리가 가진 최선의 가장 높은 가치
+- 베타 = 우리가 가진 최선의 가장 낮은 가치
+- 이 가지치기는 최종결과에 영향을 미치지 않는다.
+- good child ordering은 pruning의 성능을 개션시킨다.
+- perfect ordering은 time complexity를 O(b^(m/2))로 감소시킨다.
+- Limit를 줘서 끝까지 안내려가고 Depth limited search를 수행할 수 도 있다.(자원 절약)

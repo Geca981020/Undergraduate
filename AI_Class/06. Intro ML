@@ -1,0 +1,18 @@
+6chapter Intro ML
+6. 1 정의
+- ML: 경험(data)을 통해 스스로 향상되는 컴퓨터 알고리즘.
+- 학습 시스템: 환경 E와의 상호작용으로부터 획득한 경험적인 데이터 D를 바탕으로 모델 M을 자동으로 구성하여 스스로 성능 P를 향상하는 시스템.
+- 에이전트의 모든 구성요소는 데이터로 학습시킴으로써 향상될 수 있다.
+
+6. 2 Machine Learing Type
+1. Supervised Learning
+- 입력과 정답 쌍을 주고 학습을 수행.
+- Classification: y는 선형적, Decision Boundary
+- Regression: y는 연속적
+2. Unsupervised Learning
+- 입력 값만을 제공
+- Clustering, Dimension Reduction
+3. Reinforcement Learning
+4. Semi-Supervised Learning
+
+- Training Data, Test Data

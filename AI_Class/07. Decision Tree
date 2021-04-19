@@ -1,0 +1,22 @@
+Chapter7 Decision Tree
+7. 1 Introduction
+- 데이터 셋이 주어진다.
+- 이 때, 데이터 셋에는 날짜, 날씨, 온도, 습도, 바람의 세기와 함께 그날 테니스를 칠 수 있는지의 유무가 포함되어 있다.
+- 이 데이터 셋을 가지고 새로운 날짜, 온도, 습도, 바람의 세기가 들어올 때, 그날 테니스를 칠 수 있는지의 여부를 결정하고 싶다.
+
+-Main idea: Example Space를 분할하여 분류
+-Goal: discrete valued target functions 을 근사화하자.
+- Decision Tree는 트리처럼 표현하고, 각 노드는 날짜, 날씨, 온도등의 스키마가 되며, 에지에 각 데이터 값이 들어가 있다.(맑음, 흐림, 비 등)
+
+7. 2 Decision Tree Learning
+- 그럼 어떤 속성이 가장 좋을까? exmaple space를 가장 잘 분류하는 속성이 제일 좋다.
+- Information Gain
+
+- 불확실성이 가장 높은 것 yes, no가 동일하게 있는 것
+- Gain이 가장 높은 것을 선택
+
+7. 3 Overfitting
+- depth를 미리 자른다.
+- 다 만들고 가지를 자른다(post pruning)
+- 학습 도중 자른다.(pre pruning)
+  (성능이 떨어지면 언리 스탑핑) 

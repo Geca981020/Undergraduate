@@ -1,0 +1,23 @@
+10. 1 정의
+- 모든 trainnig example을 저장하자.
+- Memory based Learning
+- 새로운 query instance xq가 주어지면, k개의 가장 가까운 이웃 중에서 투표를 진행.
+- k는 과반수 결정을 위해, 홀수 개로 지정한다.
+
+- distance weighted kNN
+  거리를 고려하여 결정. 
+
+10. 2 장점과 단점
+- 장점: training이 빠르다. 복잡한 target function도 학습이 가능.
+- 단점: test가 느리다. 관련 없는 속성에 영향을 받을 수 있다.
+
+10. 3 hyperparameter
+- Decision Tree에서는 depth
+- kNN에서는 k의 개수, distance
+- 이것들은 hyperparameter이다. 학습보다는 설정한 알고리즘에 의해 선택된다.
+
+1. 전체 데이터에서 가장 잘 동작하는 녀석으로 hyperparameter를 선택.
+2. train/test로 나누고 train으로 학습 후 test에서 가장 잘 동작하는 hyperparameter 선택
+3. train/validation/test로 나누고 train으로 학습 후 validation에서 hyperparameter를 선택한 후 test에서 성능을 평가. - better
+4. 데이터가 부족하면 fold로 나누고 돌아가면서 validation역할을 수행하게 하고 결과를 평균을 낸다. 평균이 높고 분산이 작은 녀석을 hyperparameter로 선택.
+- 작은 데이터셋에 매우 유용하지만, 딥러닝에서는 자주 사용하지 않는다.

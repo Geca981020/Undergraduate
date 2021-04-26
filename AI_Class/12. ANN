@@ -1,0 +1,49 @@
+12chapter Artificial Neural Network
+12. 1 Perceptron
+
+- Take a real value vector
+- Linear combination
+- Threshold
+
+- What does this Perceptron learn?
+It learns linear hyperplane. Represent the boolean function. ex) AND, OR, NAND...
+
+- Learning Perception
+What is the hypothesis? w
+weight vector를 랜덤하게 초기화 -> training example에 대하여 perceptron을 적용
+-> example을 잘못 분류할 때 가중치 수정 -> 모든 training example을 올바르게 분류할 때 까지
+
+- Perceptron Training Rule
+example을 잘못 분류할 때마다 weight를 수정
+learning rate는 매우 작은 상수.
+
+- Coverage[수렴]
+모든 training example에 대해 올바르게 동작할 수 있도록
+condition: training data는 linearly separable 하고, learning rate는 충분히 작아야 한다.
+
+- Linear Separability
+two point set은 hyperplane으로 분리할 수 있는 경우 n차원에서 선형적으로 분리가능
+1개의 line으로 two point set을 구별할 수 있다.
+
+- XOR Problem
+Perceptron의 한계, 선형적으로 분리할 수 있는 함수만 나타낼 수 있음.
+
+12. 2 Learning ANN
+- Delta Rule
+훈련예제가 선형으로 분리할 수 없지만 수렴할 수는 있다.
+best-fit approximation로 수렴시키자.
+Key Idea: Gradient Descent를 사용하여 weight를 업데이트한다.
+주어진 training data에 대한 오류의 합을 최소화 시킨다.
+random지점을 잡고 미분을 해나가며 값이 최소가 되는 지점을 찾아나간다.
+
+12. 3 Multilayer Network
+- 우리의 목표: ANN을 사용하여 비선형 함수를 생성
+1. 여러 개의 계단식 선형 unit은 여전히 선형함수만 생성
+새로운 threshold unit 도입.
+- Differentiable Threshold Unit
+Linear units에서 nonlinear unit으로 바꾼다.
+출력은 입력의 비선형함수 이어야 한다.
+ex) sigmoid, tanh
+
+2. 델타 규칙이 있는 perceptron도 비선형함수를 실행하지 않음
+multilayer structure 도입.

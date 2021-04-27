@@ -1,0 +1,21 @@
+13chapter Back Propagation
+13. 1 Computational Graph + Chain Rule
+- Computational Graph: node가 수학적 연산에 해당하는 방향성 그래프로 정의됨.
+
+- Chain Rule: 합성함수의 연쇄 법칙 미분법.
+- Forward Propagation으로 모델의 출력을 구하고, 실제 정답 값과 비교하여 loss를 생성.
+- Back Propagation으로 해당 Loss를 각 가중치에 비례하여 뒤로 전파시켜 나감.
+
+14chapter Intro DL
+14. 1 Definition
+- representation learning을 가진 신경망을 기반으로 하는 Machine Learning의 일부.
+- supervised or unsupervised feature과 추출과 변환을 위해 많은 비선형계층을 사용.
+- 매개변수화된 모델을 computation graph로 조립하여, 시스템을 구축 하고 gradient descent방법을 사용하여 매개변수를 최적화하는 방식으로 학습을 수행.
+
+- good representation은 학습 작업을 더 쉽게 해준다.
+
+- Deep Learning Era
+1. Large enough datasets
+2. Fast enough CPUs or GPUs and enough Memory
+3. 많은 사람들이 인공지능을 연구 중
+4. error rate의 높은 개선

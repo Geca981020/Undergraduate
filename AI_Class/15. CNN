@@ -1,0 +1,39 @@
+15. CNN
+15. 1 도입
+- 사람의 시각 시스템에서 영감을 받아 전체-로컬 관계로 정보를 뽑아냄
+- 주로 이미지 처리에 사용
+- Convolution Layer, Pooling Layer, Fully-Connected Layer로 구성됨.
+- 1-dimensional tensor = vector, 2 = matrix, 3 = tensor
+
+15. 2 각 계층
+1) Fully Connected Layer
+- 입력과 출력 모든 노드가 연결되어 있는 신경망의 한 구조
+- 주로 CNN의 맨 마지막에 위치하여 최종결과 값을 1차원의 벡터로 변환시킴.
+- (10X3072) X (3072X1) = 10 X 1
+
+2) Convolution Layer
+- 공간구조를 보존
+- 이미지와 필터를 convolve(내적)한다.  필터를 이동시키며 정보를 뽑아냄, 1number
+- 필터는 입력값과 깊이가 같아야 한다. 
+- convolve한 결과를 activation map이라고 하며, 필터는 여러개를 사용 가능.
+- 필터는 처음에 랜덤값으로 초기화, 학습을 진행하며 필터의 값들을 학습시킨다.
+- ConvNet은 activation function이 포함된 일련의 convolution Layer이다.
+- activation map은 값을 비선형으로 바꾸고, 너무 커지지 않게 제한을 둔다.
+  ex) sigmoid, ReLU
+- stride는 필터를 이동시키는 정도. 
+
+3) Pooling Layer
+- 표현을 더 작고 관리하기 쉽게 만든다. Pooling의 filter는 학습하지 않는다.
+- 각 activation map에서 독립적으로 동작.
+- Pooling은 Max Pooling을  주로 쓰며, average Pooling도 있다.
+
+15. 3 성능향상
+1) 1X1 Convolution
+- 56X56X64 이미지에 1X1X64 conv를 32번 사용하면 크기는 56X56X32가 된다.
+- 공간차원을 유지하며 깊이를 축소 시킨다. GoogLeNet의 bottleneck Layer
+- 학습해야할 파라미터 개수를 줄여주고, 속도를 향상시킨다.
+
+2) Residual Mapping
+- Deep Model은 shallower Model 보다 더 많은 표현력을 가지고 있다.
+- 문제는 최적화이며 Deep한 모델일수록 최적화하기가 더 어렵다.
+- ResNet의 Residual Block

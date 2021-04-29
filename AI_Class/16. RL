@@ -1,0 +1,17 @@
+16. RL
+- 예상되는 보상을 극대화하기 위해 행동해야함.
+- 에이전트의 유틸리티는 reward function에 의해 결정됨.
+- Agent, Action, Environment, state, reward
+- MDP: Markov Decision Process
+RL을 수학적으로 공식화
+MDP는 다음을 포함한다
+1. Set of States
+2. Set of Actions
+3. Reward Function
+4. Transition Probability: S와 a 가 주어질 때 S'으로 이어질 확률.
+
+- 에이전트가 at를 수행.
+- 그에 따른 rt와 st+1를 에이전트에게 제공.
+- policy 𝝿: s에서 a를 매핑하는 함수. 각 상태에서 수행할 작업을 결정.
+- 누적 discounting reward를 극대화하는 policy 𝝿*를 찾는게 목표.
+- discounting: 보상의 가치가 시간이 지날수록 기하급수적으로 감소함을 의미.

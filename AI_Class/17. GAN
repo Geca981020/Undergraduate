@@ -1,0 +1,31 @@
+17. GAN(Generative Adversarial Network)
+17. 1 Introduction
+- 데이터가 주어지면 동일한 분포에서 새로운 데이터를 생성.
+- unsupervised learning의 문제인 density estimation을 해결,
+density estimation이란 다른 말로 확률밀도함수를 추정하는 것과 같은 말.
+확률 밀도함수를 추적하면 그 대상의 값의 범위, 확률 분포, 특성 등을 모두 알 수 있다.
+1. Explicit density problem: Pmodel(x)에 대해 명시적으로 정의하고 해결. 
+2. Implicit density problem: Pmodel(x)에서 샘플링할 수 있는 모델 학습. GAN
+
+17. 2 D와 G
+- Discriminator: 주어진 이미지가 real인지 만들어진것인지 구별
+1) real이면 1에 가까운 값을 출력으로 하는걸 목표
+2) 만들어진 것이면 0에 가까운 값을 출력으로 하는 걸 목표
+
+- Generator: latent code(잠복코드)를 받고 새로운 이미지를 생성
+Discriminator를 속이는 것이 목표
+
+단순한 수식으로는 Generator가 목표를 최적화하는 것은 잘 작동하지 않는다.
+D가 정확할 가능성을 최소화 하는 것이 아닌, D가 잘못할 가능성을 최대화 하도록 하자.
+-> 훨씬 더 잘 동작하며, 표준이다.
+G가 잘 동작하면 D는 0.5를 출력
+훈련 후 Generator 네트워크를 가져와서 새로운 데이터 생성에 사용한다.
+17. 3 Example
+1) DCGAN(Deep Convolution GAN)
+D는 Convolution, Leaky ReLU를 G는 Deconvolution, ReLU를 사용
+둘다 No Pooling, Beach Normalization, Adam optimizer을 사용
+기존 것 보다 생성된 데이터가 훨씬 더 좋아보인다.
+
+2) CycleGAN: 소스 도메인 A에서 소스 도메인 B로 이어지는 데이터 생성.
+ex) 얼룩말에서 말로 변환시키고 실제 말 이미지와 D를 이용해 비교.
+   말로 변환시킨 이미지를 다시 얼룩말로 변환시키고 처음 이미지와 비교해 L2 Loss 측정

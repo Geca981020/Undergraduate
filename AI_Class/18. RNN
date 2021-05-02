@@ -1,0 +1,42 @@
+18 RNN(Recurrent Neural Network)
+18. 1 Sequence Labeling
+- image는 independent
+- RNN은 sequence labeling을 푸는 게 목표이며, 이 것은 label로 input sequence를 mark up 한 것이다.
+- named entity recognition(개체명 인식)
+독립적이지 않으며, 앞 또는 뒤에 영향을 받아 고려되어야 한다.
+
+18. 2 RNN 
+- Basic Idea: 시퀀스가 처리될 때 업데이트 되는 internal state(vector)가 있다.
+ex) overall I enjoy the movie a lot를 입력
+overall 수신 후 internal state 업데이트 -> I 수신 후 internal state 업데이트 -> 끝까지
+- Advantage: 모든 길이 입력 가능, 언어적으로 가능해 보인다.
+- Architecture
+
+input sequence는 개수가 아닌 시간으로 구별된다.
+모든 시간 단계에서 반복공식을 적용하여 일련의 벡터 x를 처리
+모든 시간 단계에서 동일한 function, set of parameters(weight matrix)를 사용
+
+18. 3 RNN Process Sequence
+1. one to many: input이 vector, output이 sequence
+- Image Captioning: Image -> Sequence of words
+2. many to one: input이 sequence, output이 class 
+- Sentiment Classification: Sequence of words -> Sentiment
+3. many to many: Sequence of words -> Sequence of tags
+- 개체 명 인식
+4. many to many: Machine Translation: Sequence of words -> Sequence of words 
+- Encoder: input sequence를 vector로 인코딩
+- Decoder: vector를 output sequence로 디코딩
+- 인코더 디코더는 서로 다른 RNN을 사용하고, set of weight도 다르다. 
+- Encoder-Decoder, Sequence-to-Sequence(seq2seq)라고도 부른다.
+
+18. 4 RNN 심화
+- RNN도 back propagation으로 weight를 업데이트 한다.
+
+- 한 번에 한 문자 씩 문자를 받고, 모델에 피드백을 진행한다.
+- 한국어는 형태소 분석을 수행할 수 있다.
+
+- Bidirectional RNN
+
+- ; 표시는 두 벡터를 행결합한 것이다.
+
+- Vanilla RNN Gradient Flow

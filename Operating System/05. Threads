@@ -1,0 +1,81 @@
+5Chapter Threads
+5. 1 Process Heavy weight
+- fork를 사용하여 새 프로세스를 만들기 위해서는 cpu와 시간을 많이 사용해야 한다.
+  왜냐하면 새로운 데이터 공간을 할당하고 초기화해야하기 때문.
+- 또한 프로세스간 통신은 대부분 OS를 거쳐야 하므로 자원을 많이 사용해야 한다.
+
+- 웹 서버, 병렬 프로그래밍을 한다고 가정할 때
+병렬적으로 프로세스가 수행이 되어야 하고, 또 shared memory가 잘 되어야 하므로
+fork는 그리 좋은 방법이 되지 못한다.
+
+- 프로세스에서 같은 것: code와 대부분의 data(address space), privilege, resource(file)
+- 프로세스에서 다른 것: PC, register, SP, stack
+- 같은 것(Process)들은 공유하고, 다른 것(Execution state)들은 따로 가지자.
+execution state를 주로 thread라고 부른다. PCB 이외에 TCB를 새롭게 만든다.
+TCB 에는 다른 것들이 들어가고 각 thread가 가진다.
+
+5. 2 Threads
+- 한 프로그램 내에서 수행되는 sequence of instruction
+- 한 thread에 의한 공유데이터의 변경은 프로세스의 다른 thread에서 볼 수 있다.
+thread는 프로세스의 대부분 OS상태를 공유한다.
+- exit()는 하나의 프로세스를 죽인다. 그러므로 thread에서 exit를 사용하면 전체 thread가 죽는다. return을 사용하자.
+
+Benefit
+1) 시간과 메모리를 상대적으로 절약할 수 있다.
+2) Throuput이 향상되며, 웹 서버와 같은 곳에서 응답성이 좋아진다.
+3) thread는 자원을 공유할 때 OS가 개입하지 않아 IPC보다 더 효율적이다.
+
+5. 3 Process vs Threads
+- process는 여러 thread를 담는 컨테이너 역할을 하며, thread는 하나의 프로세스에 바운드 된다.
+- thread도 process처럼 스케쥴링의 단위가 되며 ready queue에 따로 사용된다.
+
+유사점(similar)
+1) logical control flow를 따로 가지고 있다.
+2) 각각이 context switch가 되며, 동시에 다른 것들과 실행이 가능하다.
+차이점(different) 
+1) thread는 process보다 linux에서 2배정도 더 빠르다.
+2) 자원공유에 있어서 thread는 OS가 개입하지 않는다.
+
+- thread는 각각이 자신만의 stack을 가진다. 이 때 SP, PC는 1개다. 공유해서 사용.
+
+Classification
+
+5. 4 Thread Interface & pthread
+pthread
+- thread 생성 및 동기화, 사용 및 구현을 위한 POSIX 표준 API
+- Unix에서 공통적으로 사용
+
+POSIX style threads: pthreads, DCE threads
+Microsoft style threads: Win32 threads, OS/2 threads
+
+function: pthread_create/pthread_exit/pthread_join(쓰레드가 끝날때까지 기다릴지 결정)
+pthread_mutex_init/pthread_mutex_destory/pthread_mutex_lock/pthread_mutex_unlock -> 동기화를 위한 코드
+
+5. 5 Thread Issues
+thread가 fork나 exec를 호출하면 어떻게 될까?
+1) fork 같은 경우 unix에서는 2가지 방법을 제공
+- pthread는 fork 호출 시 호출한 thread만 포함한 process를 만든다.
+- unix 표준은 fork 호출 시 모든 thread를 포함한 process를 만든다.
+  fork1 호출 시 호출한 thread만 포함한 process를 만든다.
+2) exec을 호출하면 다 죽이고, 탈 바꿈 한다.
+
+thread cancellation: thread가 완료되기 전에 종료하는 작업
+1) Asynchronous cancellation
+- 대상 thread를 즉시 종료, 하지만 thread가 공유 데이터를 처리하거나 중요한 작업을 하고 있었다면?
+2) Deferred cancellation
+- signal을 보내, 취소지점을 결정하고, 그 지점에서 중요한 일이 끝났을 때 thread 취소
+- 대상 thread 취소 지점을 정기적으로 check
+
+- pthread는 위 2가지 방법을 모두 제공하고, 결국 구현의 문제.
+
+signal handling: signal이 오면 어떤 thread에게 주어야 하지?
+1) 신호가 적용되는 thread에게만 제공
+2) 프로세스의 모든 thread에게 제공
+3) 신호를 수신하고 처리할 전용 thread를 만들고 그 곳에 제공
+- 이 것도 결국 구현의 문제
+
+Multithread - Safe(MT - Safe)
+- 함수가 한 번에 둘 이상의 thread에 호출되거나 공유 데이터에 접근 될 때
+context switch에 의해 사용에 간혹 문제가 발생 할 수 있다.
+- MT Safe를 통해 공유데이터에 대한 액세스를 동기화하여 안정성을 높여야 한다.
+- thread는 개인 글로벌 변수를 가질 수 있다. 

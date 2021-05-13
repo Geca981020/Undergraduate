@@ -1,0 +1,45 @@
+6chapter Threads Implementation
+6. 1 Threads kind
+- kernel-level threads: OS가 관리, threads 생성 및 관리에 system call 필요.
+- user-level threads: 프로그램에 연결된 라이브러리가 관리.
+- user-level threads 구현이 가능한 이유
+threads는 동일한 address space를 공유하고, PC SP register등만 따로 관리하면 된다. 
+
+6. 2 kernel level threads
+- threads를 생성하고 동기화하고 동작하는 걸 OS가 kernel에서 구현
+- kernel threads는 process보다 훨씬 저렴
+- 프로세스의 한 thread가 차단(또는 멈춤)되면 OS는 이를 알고, 해당 프로세스의 다른 thread를 수행할 수 있다.
+
+- 하지만 여전히 system call은 비용이 많이 들어간다.
+  procedure call 만큼 빨랐으면 좋겠다.
+- thread 간의 context switch에는 여전히 OS의 도움이 필요하다.
+- 각 thread의 kernel state를 유지해야 한다. 리눅스에서 최대 thread의 개수:256430
+
+6. 3 user level threads
+- user level thread는 kernel level thread보다 10~100배 더 빠르다.
+- user level thread는 runtime system(user-level library)에 의해 관리된다.
+- thread 생성, 동기화, 전환은 procedure call로 수행.
+
+- 하지만 user level thread는 OS에서 볼 수 없어 OS가 잘못된 결정을 해 잘 수행되고 있던 thread를 갑자기 변경할 수 있다.
+- 그러므로 Kernel과 user-level thread manager사이에서 조정이 필요하다.
+- TCB가 kernel에 있는게 아니라 run time system 내부에 있다.
+
+Thread context switch
+1) 현재 실행중인 thread의 context를 stack에 push(저장)한다.
+2) 다음 thread의 context를 stack으로부터 pop(복원)한다.
+3) next thread를 current thread로 세팅한다.
+
+Thread Scheduling
+- thread scheduler은 스레드 실행주기를 결정. OS에서 Process를 처리하는 것과 유사하지만 여기서는 user-level library가 수행한다.
+- queue에는 run queue, ready queue, wait queue(ex_ I/O)
+- thread가 CPU를 많이 쓰면 어떻게 해야할까? hardware interrupt로 알수 있다. 2가지
+
+1) non-preemptive scheduling
+- 모두가 자발적으로 참여한다는 전제하에
+- yield() 명령어를 호출해 thread가 CPU를 놓게 한다.
+- 이게 조금 더 빠르지만 적절한 yield() 사용을 까먹으면 안되며, 조화로운 프로그래밍이 필요하다.
+
+2) preemptive scheduling
+- 라이브러리가 강제로 thread실행을 뺏는다.
+- 비동기적으로 processor를 제어 할 수 있어야 한다.
+- 스케쥴러는 timer interrupt를 주기적으로 달라고 OS에게 요청하고, OS는 받은 신호를 유저 레벨 스케쥴러에게 signal 방식으로 전달해준다. (Unix Signal, software interrupts) 

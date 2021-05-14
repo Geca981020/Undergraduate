@@ -1,0 +1,82 @@
+7chapter Synchronization 1
+7. 1 Introduction
+- 멀티쓰레드 프로그램안에 thread들은 협력한다.
+1) 정확함을 위해 우리는 이 협력을 통제해야 한다.
+2) 스케쥴링은 응용프로그램 작성자의 통제하에 있지 않으므로 synchronization을 사용하여, 협력을 제어해야 한다. 
+3) synchronization으로 interleaving(끼임) 실행을 제한 할 수 있다.
+4) thread뿐만 아니라 process에도 적용된다.
+- 두 thread가 하나의 변수를 공유할 때 context switch가 일어나면 예기치 못한 문제가 발생할 수 있다. 
+
+7. 2 synchronization problem & sharing Resour	ce
+- 두 개의 동시 thread가 동기화 없이 공유 리소스에 액세스. race condition을 발생시킴.
+- race condition: 여러 process나 thread가 공유데이터에 동시에 액세스하고 조작할려고 하는 상황.
+결과는 non-deterministic하며, 타이밍에 따라 달라진다.- 공유 리소스에 대한 액세스를 제어하기 위한 메커니즘이 필요하다. => 동기화를 사용
+
+Sharing Resource
+- Between Threads: global variable(모든 thread에서 접근할 수 있는 staic data segment에 저장), Dynamic object(포인터를 통해 공유되는 heap에 저장)
+local variable은 각 스택별로 저장되므로 공유 X
+- Betweem Processes: shared memory, file등을 공유
+
+
+7. 3 Critical Section
+- definition: shared resource에 접근하는 프로그램에서의 일부.
+- mutual exclusion을 사용하여, critical section의 공유 리소스에 대한 액세스를 동기화.
+한번에 하나의 thread만이 critical section에서 실행될 수 있다.
+다른 모든 thread는 강제로 대기한다.
+하나의 thread가 critical section을 떠나면 다른 thread가 들어간다.
+- 그렇지 않으면 critical section이 race condition이 될 수 있다.
+
+<Requirements> => 4가지가 잘 갖춰져야 동기화문제가 해결되었다고 할 수 있다.
+1) mutual exclusion: 최대 하나의 thread만이 들어갈 수 있는 공간 영역
+2) progress
+- thread T가 critical section안에 있으면, T는 적절한 시간 내에 critical section을 완료 해야 한다.
+- thread T가 critical section밖에 있으면, T는 thread S가 critical section에 들어가는 것을 막을 수 없다.
+3) Bounded waiting(no starvation): thread T가 critical section에서 대기중이면 T는 결국critical section안에 들어간다.
+4) Performance: critical section에 들어가고 나가는 overhead는 그 안에서 수행되는 작업의 overhead보다 작다.
+
+<critical section을 구축하기 위한 Mechanisms>
+1) Locks: 다른 기술을 구축하는데 사용되며, 매우 기초적이고, 최소한의 단위.
+2) Semaphores: Lock을 기반으로 만들어지며, 좀 더 복잡하지만 더 효율적인 방법.
+3) Monitors: Language에서 높은 수준에서 지원을 해줌. 쉽게 프로그래밍 가능
+4) Messages: 통신에서 사용되는 간단한 모델 Monitor + Lock
+분산 시스템에 직접 적용.
+
+7. 4 Lock
+- Lock은 다음 2가지 작업을 제공하는 객체(메모리에 있는 데이터).
+1) acquire(): lock이 풀릴때까지 기다리고, lock이 풀릴 경우 lock을 잡는 역할
+2) release(): acquire()에서 대기중인 thread를 unlock하고 wake up하는 역할
+- Using Lock
+1) Lock은 처음에는 free 하다.
+2) critical section에 들어가기 전 acquire를 호출하고, 나갈 때 release
+3) 최대 1개의 thread 만이 lock을 유지 할 수 있다.
+4) lock can spin(a spinlock) or block(a mutex)
+- acquire는 T1이 Release를 만날 때 까지 T2를 대기시킨다.
+
+<Problem>
+- acquire, release자체도 critical section이다. acquire/release도 atomic해야 한다.
+- atomic operation: 한번에 전체를 실행하거나, 아무것도 실행하지 않는 코드.
+  실행 도중에 interrupt(or context switch)가 발생해서는 안된다.
+
+<solution>
+1) only software algorthms
+- Dekker's Algorithm, Peterson's algorithm, Lamport's Bakery Algorithm
+2) hardware atomic instructions (CPU가 알아서 해결)
+- 대부분은 이 방법을 사용 / Test-and-set, Compare-and-swap [intel은 둘다 지원]
+3) Disable/reenable interrupts(Timer에서 interrput를 꺼버린다.)
+- context switch를 방지
+
+7. 5 SpinLock의 문제점.
+- thread가 lock(or acquire)에서 계속 while등에 의해 회전하는 경우 CPU clock이 심하게 낭비된다.
+- critical section이 길수록 spin은 더 길어진다.
+- 더 높은 수준의 동기화 구조를 구축하기 위해서만 spinlock을 사용한다.
+
+7. 6 Disabling interrupts 
+- interrupt를 비활성화 시켜 lock을 구현. 
+- context switch가 없음
+- cli()로 비활성화 sti()로 활성화
+
+<what's wrong?>
+1) kernel에서만 사용가능
+2) multiprocessor에서는 불충분한 방법
+3) 중요한 이벤트를 놓치거나 연기하게 될 수 있다.(ex_I/O)
+- spinlock처럼 더 높은 수준의 동기화 구조를 구축하기 위한 기본요소로 사용된다.

@@ -1,0 +1,54 @@
+8chapter Synchronization - 2
+8. 1 Higher level Synchronization
+- Spinlock과 disabling interrupts는 매우 짧고 간단한 critical section에서만 유용.
+- 그러므로 더 높은 수준의 동기화가 필요
+1) Block Wait(spin 되지 않도록) 2) critical section에서 interrupt가 활성화 되도록
+- 2개의 방법이 존재
+1) Semaphore: binary(mutex)[counter -> 1] <1개> and counting[counter -> N]
+2) Monitor: mutex and condition variable
+
+8. 2 Semaphores
+- Dijkstra가 1968년 개발한 lock보다 high level synchronization Method
+- 각 semaphores에는 프로세스/스레드와 관련된 queue가 있다.
+- 2개의 동작
+1) wait: semaphores가 open이면 count(or value)를 1 감소 시키고, 해당 thread를 실행한다. semaphores가 close이면 count(or value)를 1 감소 시키고, 해당 thread를 block시켜 queue에 달아놓는다.
+2) signal: 항상 count(or value)를 1 증가 시키고, 대기열에서 대기 중인 하나의 thread를 깨운다.
+- semaphores는 history라고 불리는 counter를 가지고 있다.
+- counter가 0아래로 떨어지면 semaphores는 닫힌다.
+
+<additional Definition>
+1) Deadlock: 2개 이상의 프로세스가 특정 리소스에 동시에 접근하여, 양쪽 모두 작업을 수행하는데 필요한 자원을 충분히 획득하지 못해, 그 다음 작업을 수행하지 못하는 현상.
+2) Starvation: queue에서 무한적으로 기다리고 있는 현상.
+3) Priority Inversion: 낮은 우선 순위가 lock을 잡고 있어서, 높은 우선 순위의 프로세스가 실행되는 못하는 현상 / priority-inheritance protocol로 해결.
+
+8. 3 Bounded Buffer Problem
+- 동기화의 고전적인 문제들: 새로 제안된 동기화 방식을 테스트하는 데 사용됨.
+ex) Producer/consumer Problem
+- Producer/consumer가 공유하는 buffer(ring)가 존재하고 이 buffer의 크기는 제한적.
+- Producer는 버퍼에 데이터를 넣고, consumer는 버퍼에서 데이터를 삭제한다.
+- Producer/consumer는 다른 속도로 실행된다. 둘의 동작은 독립적으로 수행된다.
+- 둘은 공통되는 data인 count를 가지고 있다.
+
+- count++ => register1 = count; register1 = register1+1; count = register1;
+- count-- => register2 = count; register2 = register2-1; count = register2;
+- 위 동작 도중 context switch가 발생하면 count의 값이 이상하게 바뀔 수 있다.
+
+8. 4 Dining Philosophers Problem
+- 1965년 Dijkstra가 제안한 문제
+- Philosophers는 원형탁자에 여러명이 앉아있으며 한 사람 각각에는 양쪽에 공유되는 젓가락 1개가 존재한다. 생각하고, 배가 고파지며, 그럼 양쪽에 공유되는 젓가락 1개로 음식을 먹고 다시 젓가락을 놓는 동작을 반복한다.
+- 양쪽에 있는 Philosophers가 젓가락을 1개씩 잡아버리면 deadlock이 발생해버린다.
+
+<Semaphores Drawbacks>
+1) 공유되는 global variable이 필요하고, 어디서든 액세스가 가능해야 한다.
+2) 사용에 대한 통제권이 없고, 적절한 사용이라는 보장이 없음.
+3) 잘못된 사용으로 Deadlock과 Starvation이 발생할 수 도 있다.
+따라서, 사용하기 어렵고 버그가 발생하기 쉽다.
+
+8. 5 Monitors
+- 공유 데이터에 대한 제한된 액세스를 프로그래밍 언어가 지원
+- 컴파일러에 의해 추가되고 런타임에 시행되는 synchronization 코드
+- 다음을 캡슐화하는 소프트웨어 모듈
+1) shared data structures
+2) 공유 데이터에서 작동하는 Procedure
+3) 해당 Procedure를 호출하는 동시 processes간의 동기화
+- 지원하지 않는 언어가 존재할 수 도 있지만, 지원한다면 우리는 그냥 쓰기만 하면 된다.

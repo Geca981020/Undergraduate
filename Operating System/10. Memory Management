@@ -1,0 +1,65 @@
+10chapter Memory Management
+10. 1 Goals
+1) 프로그래밍을 위한 편리한 추상화를 제공
+2) 여러 프로세스들을 위한 부족한 메모리 리소스를 적절하게 할당
+3) 프로세스간 메모리간 격리 제공
+
+10. 2 Single&Batch Programming / MultiProgramming
+Single&Batch Programming: 1개의 user process만을 사용.
+- 단순히 physical addresses를 사용하면 되므로 쉽고, 간단하다.
+MultiProgramming: 여러 개의 processes를 메모리에 적재
+- Requirements: Protection/Fast Translation/Fast context switching
+
+10. 3 Management
+<Fixed Partition>
+- 고정된 크기가 동일한 파티션으로 프로세스 적재 전에 미리 메모리 공간을 나눔.
+- 파티션의 개수는 멀티프로그래밍의 정도에 따라 결정.
+- hardware requirements: base register
+- physical address = virtual address + base register
+- 프로세스 전환시 OS에서 base register로 load함
+장점: 구현이 쉽고, context switch가 빠르다.
+단점: internal fragmentation이 발생하고, partition size가 모든 프로그램에 맞지 않다.
+
+- Improvement: 파티션 크기가 굳이 같은 필요는 없다.
+- First fit allocation, Best fit allocation => 둘다 scan 필요, Best fit이 더 많이.
+- IBM OS MFT
+
+<Variable Partition>
+- physical memory를 가변크기의 공간으로 나눈다.
+- IBM OS MVT
+- hardware requirements: base register, limit register
+- physical address = virtual address + base register
+- 프로세스 전환시 OS에서 base register로 load함
+
+- limit register는 protection 역할을 한다.
+- First fit, Best fit, Worst fit(가장 큰 것에) -> 어느게 더 좋다고 할 수 는 없다.
+장점: Internal Fragmentation이 없다.
+단점: External Fragmentation이 있다.
+해결책: Compaction, Paging and Segmentation
+
+<Overlays>
+- 주어진 시간에 필요한 데이터와 코드만을 메모리에 할당한다.
+- OS가 아닌 사용자가 구현한다
+장점: 메모리를 아껴 쓸 수 있으며, OS가 필요 없다.
+     프로세스가 할당 된 메모리 양보다 클 때 필요.
+단점: 매우 복잡하다.
+
+<Swapping>
+- Swap in, Swap out으로 디스크로부터 메모리로 프로세스를 가져오고 다시 돌려 보낸다.
+- 한 번에 하나의 application만 메모리에 할당하고, 메모리가 부족한 과거에 많이 쓰인 기법.
+- 최신 OS는 가상 메모리와 함께 수정된 swapping(demand paging) 메커니즘을 사용한다.
+문제점: transfer time이 길다, 만약 I/O를 쓰는 도중에 swapping 이 발생하면?
+
+10. 4 Virtual Memory
+장점
+1) physical memory 대신 user logical memory를 사용하므로 프로세스에게 균일하고, 커다란 메모리가 있는 것처럼 제공할 수 있고, 프로그래밍을 하기가 더욱 수월해진다.
+2) 프로세스간 메모리 영역을 보호해주기가 더 용이하다.
+3) 프로세스간 파일과 address공유가 훨씬 더 간편하다.
+4) 프로세스 생성이 편하고, 메모리보다 더 큰 (or 더 많은)프로세스를 실행시킬 수 있다.
+단점: 성능이 나빠질 수 있다.
+구현: Paging, Segmentation
+
+- CPU와 OS는 runtime에 address translation을 수행.
+- 가상 주소는 각 프로세스에게 비공개 되어 있다.
+- OS가 가상주소의 물리적 주소 위치를 결정.
+- CPU가 가상주소로 접근을 요청하면, OS의 도움을 받는 하드웨어가 가상주소를 물리적 주소로 변환시킨다. 가상주소를 실제주소로 바꾸는 방법은 매우 다양하다.

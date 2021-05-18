@@ -1,0 +1,92 @@
+12chapter VM-2
+12. 1 Page table
+- 4kb 페이지가 있는 32비트 주소공간에 대한 페이지 테이블의 크기 = 4MB(프로세스 당)
+- space overhead를 줄이기 위해, 실제로 사용되는 주소 공간 부분만 매핑하자.
+- 사용되는 것만 매핑하는 법: 페이지 테이블 구조를 동적으로 확장 가능하게 만들기.
+ex)　two-level, hierarchical, hashed
+
+<Two Level Page Tables>
+- outer page table -> page of page table -> physical memory
+- 반드시 있다(특정한 address에 존재.) -> 필요할 때만 만든다.
+
+- Master page table 
+master page number -> secondary page table
+- Secondary page table
+secondary page number -> page frame number
+
+<Hashed Page Tables>
+- hash table의 크기는 조정 가능.
+- 링크드 리스트로 연결되어 있다.
+- hash function에 따라 메모리 사용량이 달라짐.
+- 각 요소는 다음을 포함: VPN, 매핑된 page frame의 값, 다음 요소 가리키는 포인터.
+<Clustered Page Tables>
+- hash page table의 변경.
+- 충돌을 방지하기 위해 좀더 향상된 기법이지만 충돌은 발생 할 수 밖에 없다.
+- hash table의 각 항목은 연속적인 페이지 테이블을 저장.
+
+<Inverted Page Tables>
+- pid랑 VPN값을 page table에서 찾고 해당되는 address 크기가 PFN가 된다.
+- page table은 1개만 있으면 되며, 메모리를 효율적으로 아낄 수 있다. 
+- page reference가 발생 시, 테이블 검색에 필요한 시간이 증가.
+해시 테이블을 사용하여, 검색을 하나 또는 최대 몇 개의 PTEs로 제한.
+
+<Paging Page Tables-페이지 테이블의 주소 지정>
+페이지 테이블은 어디에 저장되어야 할까?
+1) Physical Memory
+- 장점: 다루기 쉬우며, translation이 필요하지 않다.
+- 단점: 할당된 page table은 VAS의 수명동안 메모리를 계속 소비한다.
+2) Virtual Memory
+- 장점: 사용되지 않는 page table page는 disk로 page out할 수 있다.
+- 단점: translation이 필요하다.
+- outer page table은 페이징 해서는 안된다, 
+- 전체 OS 공간은 페이징할 수 있다. 특수 코드 및 데이터 연결 필요.
+
+12. 2 TLB
+- 기존 페이지 테이블은 메모리 조회 비율이 2배인데, two level page table로 가면 3배의 비용이 든다.
+- 시간이 오래 걸리므로 빠르게 만들고 싶다. MMU안에 있는 TLB를 사용.
+<TLB>
+- valid / virtual page / modified / protection / page frame 으로 구성
+- single cycle에 수행 가능.
+- TLB는 하드웨어(+ cache)로 구현. 
+- virtual page number를 tags라 부르고, PTEs를 values라고 부른다.
+- TLB는 locality를 이용한다.
+
+- direct mapped는 오직 한곳에만 들어가며, 하위 비트 몇 개를 이용해서 구현한다.
+- fully는 모두 찾아봐야해서 search time이 많이 들고(하지만 3개 별로 차이 없음), 비싸지만 비용을 많이 지불해도 빨리 만드는게 TLB의 목표이기 때문에 TLB는 fuly associative로 만든다.
+- associativity가 증가하면, miss rate는 감소한다.
+<miss와 hit>
+- 99% hit, 1% miss
+- TLB miss가 발생하면 TLB를 업데이트 해준다.
+1) Hardware(MMU): 거의 대부분.
+2) Software(OS): OS가 PTEs를 찾아 TLB에 업데이트 / 느리다. / 유연하다.
+
+<managing TLBs>
+- OS는 page table과 TLB의 일관성을 보장해야한다.
+- process context switch마다 TLB의 내용을 다 버리고(flush TLB), 새로 reload한다.
+- IA-32에서 CR3 레지스터의 내용이 바뀌면 TLB가 자동으로 flush된다.
+- PID를 TLB 항목의 일부로 저장할 수 도 있지만, 비용이 많이 든다.
+
+- TLB가 misses가 발생하고, 새 PTE가 load되면, 캐시된 PTE는 제거되어야 한다.
+TLB replacement policy로 교체할 PTE를 선택. 
+하드웨어에서 구현. 일반적으로 단순(ex) LRU)
+
+12. 3 Memory Refference
+- MMU가 physical frame과 offset으로 결합해 physical address로 바꾼다.
+
+<TLB misses>
+1) MMU가 메모리의 page table에서 PTE를 로드한다. => Hardware가 처리
+- OS의 개입이 필요없고, OS는 하드웨어가 직접 액세스할 수 있도록 페이지 테이블을 미리 세팅해둔다.
+2) OS가 trap을 발생시킨다. => Software가 처리
+- OS가 개입. OS가 page table에서 PTE를 로드한다. OS는 exception에서 반환되고 TLB는 계속 수행된다.
+
+<recursive faults>
+- TLB에도 없고 page table에도 없는 page out된 상황.
+- page fault handler가 physical memory에 올리고, PTE에 적재시킨 후 해당 PTE를 TLB로 가져온다.
+
+<page faults> => two cases
+1) Read/Write/Execute - 작업이 허용되지 않음(protection fault)
+2) Invalid - virtual page에 할당되지 않았거나, physical memory에 없는 경우
+
+TLB가 OS에 trap을 발생시킴.
+1) Read/Write/Execute, Invalid(Not allocated): 프로세스에 오류를 보냄.
+2) Invalid(Not in physical memory): PTE를 메모리로 가져옴

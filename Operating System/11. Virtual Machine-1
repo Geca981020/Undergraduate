@@ -1,0 +1,75 @@
+11chapter VM-1
+11. 1 Paging
+- physical memory를 fixed-sized block인 frame으로 나누고, virtual memory도 동일한 크기(거의 대부분)의 page로 나눈다. 이 때 크기는 2의 지수승이며, 대부분 4k이다.
+- page table이 translation을 수행하며, 프로세스의 물리적 공간이 연속적이지 않아도 된다.
+- page table은 각 process마다 가지며, 같은 frame을 중복해서 가리키면 안된다.
+
+<user's perspective>
+- 사용자(or process)관점에서 메모리는 0~N까지의 인접한 공간으로 간주
+Virtual Address Space(VAS)라고 부른다.
+- process가 VAS 외부의 메모리를 참조할 수 없으므로, 각 프로세스의 메모리는 보호가 제공된다.
+
+<translating addresses>
+- virtual address는 two part로 구성 
+<virtual page number(VPN)::offset>
+- physical address 는 <page frame number(PFN)::offset>으로 구성.
+- page table은 OS가 관리하고, VPN에서 PFN으로의 매핑을 수행. / one PTE per VPN
+- page size bit = page offset bit
+
+<Page Table Entries (PTEs)>
+- valid bit: PTE를 사용할 수 있는지 없는지를 검사. Memory에 있니 Disk에 있니.
+- reference bit: page access 여부를 나타냄. 읽기 또는 쓰기가 되면 설정.
+- modify bit: 페이지 쓰기가 발생했는지 여부를 설정.
+- protection bit: 페이지에서 허용되는 작업을 표시. ex) read, write, execute
+
+<advantage>
+- 물리적 메모리 할당이 쉽다. / page를 disk에 넣는 page out이 쉽다.
+- 외부 단편화가 없다.
+- 페이지 보호가 쉽다, 페이지 공유가 쉽다.
+
+<disadvantage>
+- 내부 단편화가 있을 수 있다.
+- 메모리 참조 오버헤드(Performance overhead)
+주소 조회 때 2번의 참조(page table, main memory)
+solution: TLB
+- 페이지 테이블이 메모리 공간을 추가로 확보하면 사용 메모리가 커질 수 있다.(space overhead)
+solution: page the page tables, multi-level page tables, inverted page tables
+
+11. 2 Demand Paging
+- 필요할 때만 페이지를 메모리에 로드.
+장점: 적은 I/O 필요, 적은 Memory 필요, 빠른 response, 더 많은 프로세스 탑재.
+- OS는 Mainmemory를 disk의 cache로 사용한다.
+physical memory가 가득차서, 새로운 걸 가져와야하거나 / dirty된 PTE를 옮길 때 swap
+
+<page fault>
+- OS는 disk에 데이터가 있으면 해당 PTE를 유효하지 않다고 설정. PTE에는 swap위치를 저장. -> 해당 페이지에 액세스가 발생 -> page fault handler가 disk에서 physical memory로 데이터를 이동 -> PTE로 가리키도록 업데이트
+- 만약 physcial memory가 가득 차면 page replacement algorithm으로 누구를 뺄지 결정해야함.
+- OS는 일반적으로 빈 페이지를 유지하여 할당이 불가피하게 안 되는 경우가 없도록 함.
+- Locality of Principle에 의해 효율적임.
+- 프로세스가 처음 시작할 때 모든 PTE vaild bit는 false이다. -> 데이터를 가져오거나 사용하게 되면 매핑된 녀석이 없으므로 cold miss, cold page fault가 계속 발생 -> 필요한 코드와 데이터를 모두 메모리에 할당하면 오류는 줄어들음.
+- miss가 계속 발생하지만 이게 더 효율적이다.
+
+11. 3 Segmentation
+- page는 일정한 크기로 데이터를 나누기만 할 뿐 논리적으로 관련된 데이터로 데이터를 분할 하지 않는다.
+- segmentation은 논리적으로 관련된 데이터 단위로 메모리를 분할.
+ex) code, stack, heap
+- segment가 기본 단위이며, 그 크기는 가변적이고, 각 segment는 독립적이라 서로 영향을 미치지 않는다.
+- virtual address: <segment # :: offset>
+
+- hardware support를 필요로 하며, 여러개의 base/limit register 쌍을 사용한다.
+
+<Advantage & Disadvantage>
+Advantage: 가변적인 데이터(증가하거나 감소)를 손쉽게 처리 가능 ex) heap
+segment의 보호와 공유가 용이 / 논리적 구조화가 상대적으로 쉬움.
+Disadvantage: external fragmentation, segment table이 필요함, 세그먼트에 대한 포인터를 프로세스 간에 공유하려면 세그먼트가 동일한 세그먼트 번호를 계속 가져야 함.
+
+11. 4 Paging vs Segmentation
+<Hybrid approaches> 
+- segmentation with paging
+- 세그먼트는 페이지의 배수 크기이다. 
+- IA-32에서는 다양한 페이지 크기(4kb, 2mb, 4mb)를 제공.
+
+- 세그먼트를 사용하여, 논리적으로 관련된 단위로 데이터를 관리
+- 페이지를 사용하여 세그먼트를 고정된 크기로 분할시킴
+- external fragmentation이 없음. internal은 존재.
+- IA-32에서는 segments and paging을 제공.

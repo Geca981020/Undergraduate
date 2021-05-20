@@ -1,0 +1,139 @@
+13chapter - VM3
+13. 1 Page Replacement
+- page fault가 발생하면 OS는 오류가 발생한 page를 디스크에서 메모리의 page frame으로 이동시킨다. -> 사용 가능한 frame이 없다.(no free frame) -> 새로운 frame공간 요구가 오면 page를 교체해야 한다. -> page Replacement algorithm(6)으로 수행.
+- page replacement algorithm의 목표는 제거할 제일 좋은 page를 제거해서 fault rate를 줄이는 것.
+- 제거할 제일 좋은 page는 다시는 사용하지 않을 page를 말한다. 
+- Belady's proof: 가장 오랫동안 사용하지 않을 페이지를 제거하면 page fault 수가 최소화된다.
+
+<Belady's Algorithm> 
+- 최적의 페이지 교체
+앞으로 가장 오래 사용하지 않을 페이지 교체
+모든 Page replacement algorithm중에서 오류율이 가장 낮습니다.
+- Problem: 미래를 예측해야 함
+- 벨라디가 왜 유용한가? - 다른 알고리즘과 비교해서 알고리즘의 성능을 측정.
+
+<FIFO>
+- 간단한 방법으로, 교체할 때 가장 오래된 것을 버린다.
+- FIFO는 Belady's Anomaly로 고통받는다.
+- Belady's Anomaly: page frame(or memory)의 개수가 늘어나면 page fault가 감소하는게 정상인데, 반대로 page fault가 늘어나는 현상.
+<LRU: Least Recently Used>
+- 교체시 과거에 가장 안 쓰인 녀석을 제거한다.
+- LRU는 가장 많이 쓰인다. 어딜 가든 잘 먹힌다.
+- LRU는 과거를 보고, Belady's는 미래를 본다.
+- Implementation: Counter(Timestamp 입력), Stack(Stack 유지)
+- approximation(heuristic)을 필요로 한다.
+
+Approximating LRU
+- 많은 LRU Approximations는 PTE Reference (R) bit를 사용한다.
+- Counter Based Approach
+1) 각 page에 대해 counter 유지
+2) 정기적으로 모든 page에 대해 R=0인 경우, 카운터 증가(사용X), R=1이면 카운터를 0으로
+3) 가장 counter가 큰 page를 교체.
+
+<Second Chance or LRU clock>
+- 최근에 참조된 페이지에 대해 두 번째 기회를 주는 FIFO.
+- Linux에서 실제로 사용하는 방법, LRU를 좀 더 빠르게 구현.
+- 모든 physical page frame을 big circle로 정렬 -> 시계 바늘을 사용하여 좋은 LRU 후보를 선택 -> 시계처럼 원형 순서로 페이지를 탐색 -> R bit off이면 최근에 사용되지 않았으므로 victim이 발생할 수 있다. / R bit on 이면 R을 끄고 다음 페이지로 이동.
+- page가 필요하면 시계 바늘이 빠르게 움직인다.
+- 메모리가 충분하면 오버헤드는 적고, 메모리가 크면 정보의 정확도가 낮아진다.
+
+<Not Recently Used: NRU or Enhance Second Chance>
+- R(Reference) bit, M(Modify) bit를 사용
+- 가장 낮은 번호의 비어있지 않은 클래스에서 무작위로 제거.
+- Macintosh(매킨토시)가 사용한다.
+- advantage: 이해하기 쉽다, 구현하기에 효율적, 최적은 아니지만 적절한 성능.
+
+<LFU: Least Frequently Used>
+- Counting-based 페이지 교체
+- software counter는 각 페이지와 연결 -> R bit가 counter에 추가 -> counter는 각 페이지가 얼마나 자주 참조되었는지를 알려준다.
+- LFU: 가장 적게 쓰인 녀석을 뺀다. (counter 필요)
+- MFU(Most): 가장 많이 쓰인 녀석을 뺀다. 잘 안사용한다.
+  가장 적게 쓰인 녀석은 방금 가져온 것일 수 도 있다.
+
+Aging(counting)
+- R bit가 가장 왼쪽에 추가되기 전에 counter를 1bit shift right를 수행.
+- 1의 개수가 가장 적은 애를 뺀다.
+- shift를 쓰는 건 overhead가 거의 안 들어가지만 space를 쓰는 건 overhead가 크다.
+13. 2 Allocation of Frames & Thrashing 
+<Allocation of Frames>
+- 다중 프로그래밍 시스템에서 물리적 메모리를 경쟁 프로세스에 할당하는 방법이 필요.
+- 2가지 방법이 존재하며, 뭐가 더 좋다고 할 수 는 없다.
+1) fixed space algorithms: 각 프로세스에는 사용할 수 있는 페이지 제한이 있다.
+- Local Replacement: 일부 프로세스는 잘 될 수 있고, 다른 프로세스는 어려울 수 있음.
+2) variable space algorithms: 프로세스의 공간이 동적으로 확장되고 축소됨.
+- Global Replacement:한 프로세스가 나머지 프로세스를 망칠 수 있다.(Linux)
+
+<Thrashing> = overcommitted
+- 과도한 page fault에 의해 page replacement가 계속 발생해 버벅거리는 현상
+- 해결방법: 프로세스의 모든 page를 write out한다 / 메모리를 추가 구매.
+
+13. 3 Working Set Model & PFF
+<Working Set>
+- 정의: 현재 어떤 프로세스가 요구하는 페이지들의 집합.
+- 프로세스의 메모리 사용의 dynamic locality을 모델링하는데 사용됨.
+
+- Working Set Size(WSS): woring set이 필요로 하는 페이지 수.
+1) WSS는 program locality에 따라 변경된다. 지역성이 좋지 않으면 더 많은 크기
+2) WS가 메모리에 있어야 심각한 오류(thrashing)를 예방할 수 있다.
+3) multiprogramming 정도를 조절. WSS의 합이 총 프레임 수를 넘어서면 프로세스 중단
+-> thrashing 방지
+
+- Working Set Page Replacement
+1) working set에 없는 page를 제거.
+2) virtual time(CPU 시간)을 측정.
+3) PTE에 Time of last use(Tlast)필드를 연결
+4) 주기적인 clock interrupt는 R비트를 지운다.
+5) R=1이면 현재 가상 시간을 timestamp / R=0이고, age가 일정한 term보다 작으면 제거.
+
+<PFF: page fault frequency>
+- 각 프로세스 별로 fault를 모니터링 한다.
+- 오류율이 임계치보다 높으면 더 많은 메모리를 주고, 오류율이 임계치보다 낮으면 메모리를 뺏는다.
+- PFF가 증가하고, 사용 가능한 여유 프레임이 없다면 일부 프로세스를 선택해서 중지시킴.
+
+13. 4 Advanced VM Functionality
+- Virtual Memory Tricks
+1) Shared Memory
+2) Copy on Write
+3) Memory-mapped Files
+
+<Shared Memory> ex) Web Server
+- private virtual address space는 애플리케이션을 보호하므로, 데이터 공유가 어렵다.
+- shared memory를 사용하여, 프로세스가 direct memory reference를 통해 데이터를 공유할 수 있다.
+
+implementation: page table을 사용하여 공유 메모리를 어떻게 구현할 수 있는가?
+- answer: 두 테이블의 PTE가 동일한 physical frame에 매핑되도록 한다.
+           각 PTE는 서로다른 protection values를 가질 수 있다.
+- 각 프로세스 address space안에 있는 virtual address를 shared memory에 맵핑할 때 같게 할래? 다르게 할래?
+1) Different: Flexible(주소 공간 충돌 없음), 공유 메모리 세그먼트 내부의 포인터가 유효하지 않음
+2) Same: Less Flexible하지만 공유 포인터가 유효함.
+
+<Copy on Write>
+- 프로세스 생성: 상위 프로세스의 전체 공간을 하위 프로세스로 복사해야함/비효율적
+- solution 1) Use Threads
+
+- solution 2) Use vfork() system call
+1) vfork()는 부모의 메모리 주소 공간을 공유하는 프로세스를 만든다.
+2) 부모가 자식에게 필요한 데이터를 덮어쓰는 것을 방지하기 위해 자식이 종료될 때까지 부모는 기다린다.
+3) 자식이 즉시 exec()를 할 때 유효.
+
+- solution 3) Copy on Write(COW)
+1) Linux(Unix)에서는 자식 프로세스(child process)를 생성(fork)하면 같은 메모리 공간을 공유하게 된다. 
+2) 그런데 부모 프로세스가 데이터를 수정하면 같은 메모리 공간을 공유할 수 없게 된다. 또한 자식이 사용하고 있으면 작업이 끝날 때 까지 기다려야 한다. 그러므로 부모 프로세스는 해당 페이지를 복사한 다음 수정한다. 
+장점: 페이지를 수정할 때에만 복사되므로, fork()를 사용하여 페이지 전체를 복사하는 것보다는 빠르다.
+
+<Memory-mapped Files>
+- 정의: 프로세스의 가상 메모리 주소 공간에 파일을 매핑한 뒤 가상 메모리에 직접 접근하는 것으로 파일 읽기/쓰기를 대신하는 것.
+- mmap: 가상 메모리 영역에 파일을 바인딩
+
+- 처음에는 page fault가 발생 => OS는 잘못된 page에 액세스 할 때마다 파일에서 page를 읽는다. => 파일이 메모리에서 제거될 때 파일에 page를 쓴다.(쓰기가 수행되었다면)
+
+- 장점
+1) 파일 및 메모리에 대한 균일한 액세스(포인터만 사용)
+2) 적은 복사 횟수
+3) 여러 프로세스가 동일한 파일을 매핑하여 메모리의 페이지를 공유할 수 있다.
+
+- 단점
+1) 프로세스가 데이터 이동에 대한 제어력이 떨어짐
+2) streamed I/O(pipe, socket) 혜택을 받지 못한다.
+
+- anonymous VM(page): 메모리에는 있는데 디스크에 의해 백업되지 않은 페이지

@@ -1,0 +1,98 @@
+14chapter I/O Systems
+14. 1 PC BUS Structrue & Kernel I/O Structure
+- 오늘 날 대부분의 하드웨어는 PCI bus를 사용.
+
+14. 2 Device Characteristics - Block device vs character device
+- I/O Device의 종류에는 무엇이 있는가?
+<Block Device>
+- 정보를 fixed size block에 저장하고, 데이터를 주고 받을 때 block단위로 수행.
+- 각자 고유한 주소를 가지고 있고, 각 블록은 다른 블록과 독립적으로 사용된다.
+- ex) disk, tape
+<Character Device>
+- 문자스트림을 전달하거나 받는다.
+- 주소지정을 할수 없으며, seek operation이 없다.
+- printer, modem, keyboard
+
+<device controller(or host adapter)>
+- I/O장치의 구성요소로 여러개의 디바이스를 묶어서 관리할 수 있는, 각 device를 bus에 연결하는 장치
+- serial bit stream을 byte단위의 block으로 바꾸며, 메인 메모리와 local buffer로 데이터를 입출력하며, error를 correction한다.
+
+14. 3 Device Characteristics - Direct I/O, memory mapped I/O
+- device를 처리하는 방법, I/O device에 accessing 하는 방법.
+- device에는 일반적으로 register가 있고, register는 data-in register, data-out register, control register등 매우 다양하다.
+- device driver가 register에 command, address, data등을 쓰거나, register에서 데이터를 읽는다.
+
+<direct I/O>
+- 고정된 I/O address에 device가 배정되고, special I/O instruction을 수행한다. 
+- 000~00F: DMA controller, 020~021: Interrupt controller, 040~043: Timer
+<Memory-mapped I/O>
+- device controller register는 프로세서의 주소공간에 매핑된다.
+CPU는 stadard data trnasfer instructions으로 I/O요청을 수행한다.
+- I/O device driver는 C로 완전한 작성이 가능하다.
+- 특별한 보호 메커니즘이 필요가 없다. PTE를 통해서 보호하기 때문에.
+- device register 읽기 및 값 테스트는 single instruction으로 수행된다.
+
+14. 4 Device Characteristics - Polling vs Interrupt
+- I/O요청이 처리되었다는 걸 CPU가 어떻게 알 수 있을까?
+<Polled I/O>
+- CPU가 polls을 요청해서 주기적으로 I/O에게 물어본다.
+- 장점: 구현하기 쉽고, 소프트웨어를 쉽게 제어할 수 있다.
+- 단점: CPU를 너무 많이 쓰게되고, 낮은 우선순위의 디바이스는 실행 되지 못할 수 있다.
+<Interrupt driven I/O>
+- I/O가 끝나면 interrupt를 CPU에게 보낸다.
+- interrupt는 여러 device가 공유한다.
+- 장점: CPU는 필요할 때만 장치를 처리할 수 있고, 일반적으로 Polling보다 효율적.
+- 단점: 과도한 인터럽트는 오히려 실행을 방해. 전송된 바이트당 1개 인터럽트가 필요할수도
+
+14. 5 Device Characteristics - Programmed I/O(PIO) vs DMA(Direct Memory Access)
+- I/O device와 Memory 사이의 데이터 전송
+<Programmed I/O>
+- CPU가 관여. sepcial I/O instruction vs memory mapped I/O
+<DMA>
+- 고속 I/O device에 쓰이며, CPU 개입없이 수행된다.
+- CPU는 dma controller(address, count, control를 포함)로 명령을 주고, 데이터 교환이 끝나면, dma controller가 CPU에게 interrupt를 보낸다.
+
+14. 6 Device Characteristics - Blocking vs Non-blocking 
+<Blocking I/O>
+- 프로세스가 I/O가 완료될때까지 중단.
+- 사용하기 쉽고, 이해하기 쉽다. / 하지만 리소스 낭비가 심하다.
+- read(), write()
+<Non-Blocking I/O>
+- I/O가 수행되는 동안 프로세스는 중단되지 않는다. 
+- I/O가 요청되면, I/O의 진행상황과 상관없이 바로 결과값이 반환된다.
+  데이터가 아직 준비가 안되었으면, 결과 메시지(ewouldblock)을 반환.
+- multi-threading으로 구현
+- select()를 사용해서 데이터가 준비되었는지 확인.
+
+
+14. 7 I/O Software Layers
+<Goal of I/O software>
+- device independence: device마다 코드가 달리지지 않으면 좋겠다.
+- uniform naming
+- error handling
+
+<I/O Software Layers>
+
+<Device Drivers>
+- 정의: 각 I/O device를 control하는 장치별 코드.
+- device-independent I/O software와 interrupt handler 사이에서 interacting
+- 아주 잘 정의된 device format이 있다.
+- device drivers 구현
+1. 커널과 정적으로 연결.
+2. 부팅 시 선택적으로 시스템에 로드.
+3. 실행 중 시스템에 동적으로 로드.
+
+- 운영체제가 망가지는 건 거의 대부분 device driver 때문에 발생한다.
+드라이버는 windows XP 충돌의 85%를 차지하며, linux에서는 kernel 보다 7배 더 버그가 많다.
+- 안정성과 신뢰성은 매우 중요한 문제이지만, 아직도 해결되지 못한 문제이다.
+- linux kernel code의 70%를 차지.
+
+<device independent I/O SW>
+- 정의: device driver를 위한 uniform 인터페이스
+- unix에서 device는 특수 파일로 처리. open() close()와 같은 system call로 액세스.
+major device number: device 종류/minor device number: device 이름
+minor device number가 매개변수를 통해 driver에게 전달된다.
+- 작업 수행: error reporting(사용자에게 오류 보고), handling error(일정횟수 재시도, 오류 무시, 프로세스 죽이기, error code로 system call)
+
+<user space I/O SW>
+- I/O library: fopen(), fgets(), fputs()

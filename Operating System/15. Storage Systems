@@ -1,0 +1,67 @@
+15chapter Storage Systems
+15. 1 Secondary Storage
+- primary memory 바깥에 있다.
+- 명령어의 직접실행 허용X, 직접적인 데이터 읽기/쓰기 허용X
+- 특징: 대용량, 싸다, 지속성 높음, 느리다.
+
+15. 2 HDD 
+- 기계적: rotating disk, arm assembly
+- 전기적: disk controller, buffer, host interface
+
+- read/write head 끝 부분에 있는 magnetic head가 platter에 붙었다, 떼였다 하면서 데이터를 기록한다.
+
+15. 3 managing disk
+- disk는 많은 것이 기록된 지저분한 물리장치. 
+- OS는 상위 수준의 software에게 이러한 혼란을 숨기는 것.
+1) low-level device drivers
+2) higher-level abstractions
+
+- OS는 다양한 level에서 disk access를 제공한다.
+- user library: logical file 이름으로 접근.
+- filesystem: logical block number로 접근
+- block layer: physical disk block(surface, cylinder, sector)으로 접근.
+
+
+<디스크에 데이터를 요청>
+- 디스크에 요청을 지정하려면 많은 정보가 필요하다.
+ex) cylinder #, surface #, track #, sector #, etc.
+오래된 디스크에서는 이 모든 것을 지정해야 한다. 그러므로 OS는 모든 디스크 매개 변수를 알아야 한다.
+- 최신 디스크는 더 복잡하다. 모든 섹터가 동일한 크기가 아니며, 섹터가 다시 매핑된다.
+- 오늘 날 디스크는 더 높은 수준의 interface를 제공한다. ex) SCSI
+디스크는 데이터를 [0~N-1]블록의 논리적 배열로 표현하고, 이 논리적 배열을 실린더,표면,트랙,섹터에 매핑한다. OS는 블록 번호만 알면되므로, 물리적 매개변수는 OS에게 숨겨진다.
+
+<Disk Performance>
+- seek time: disk arm을 올바른 cylinder로 이동(very slow)
+- rotation: sector가 회전되어서 헤더아래로 올때까지 이동시킴(slow)
+- transfer: surface에서 disk controller로 데이터를 전송하고, host로 다시 전송(quick)
+
+15. 4 disk scheduling
+- 여러 개의 작업이 들어올 때 어떤 순서로 읽어야 효율적일까?
+- seek는 비용이 많이 들기 때문에.
+- 디스크가 이미 작업중인데 새로운 작업이 들어오면 disk queue에서 기다리게 된다.
+1) FCFS: 요청이 오는 순서대로 처리.
+- load가 적은 경우 합리적, 긴 request queue에 대해서 long waiting time
+2) SSTF(시간적으로 제일 좋은 방법): seek time을 최소화. 가장 가까운 녀석부터 처리.
+- starvation이 발생할 수 있다.
+3) SCAN: elevator algorithm, 한 방향으로 쭈욱 그 다음 역 방향으로 쭈욱
+- wait time이 비균일(non-uniformly)하다.
+4) C-SCAN: SCAN이랑 비슷하지만 역 방향 진행없이 다시 돌아와서 한 방향으로만 진행.
+- wait time이 균일하다.
+- SCAN과 C-SCAN은 작업이 없어도 끝가지 가야하기 때문에 그 과정에서 시간이 소모됨.
+5) LOOK/C-LOOK: SCAN/C-SCAN과 유사하지만 arm은 마지막 요청까지만 진행.
+- 작업을 끝까지 가야할지를 판단하는 것에서 오버헤드가 발생.
+
+<disk scheduling 선택>
+- SSTF가 일반적이다. 
+- SCAN,C-SCAN은 디스크가 자주 과부하(queue에 많이 걸림)에 걸릴 때 좋다.
+- 최신 디스크는 종종 자기 자신 스스로가 알아서 스케쥴링을 한다.
+
+15. 5 추가 사항
+<modern disk>
+- 작은 cpu + 많은 킬로바이트 메모리
+- 지능형 기능: read ahead(미리 읽기), cacing(자주 사용되는 블록), command queuing
+
+<I/O Scheduler 목표>
+- 전체 디스크의 throughput향상: request 병합 또는 정렬
+- starvation 방지: deadline 전에 request 제출
+- fairness, QoS(Quality-of-service) 제공

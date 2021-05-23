@@ -1,0 +1,64 @@
+16. File System
+16. 1 Basic Concepts(5)
+- 장기 정보 저장 요구사항: 매우 많은양의 정보 저장, 프로세스 종료시 생존, 여러 프로세스가 동시에 정보에 액세스
+- File System: secondary storage(file)에 대한 추상화를 구현.
+  즉, 논리적으로 파일을 구성하고, 데이터 공유와 보호가 효율적으로 되도록 하는 것.
+- File: 보조기억장치에 기록된 정보들의 모음.
+  비휘발성, OS는 논리적 뷰를 제공.
+- File Structures
+  1) Flat: byte sequence
+  2) Structured: fixed length records, variable length records
+- Logical View 
+
+Opeartions: Identify(): return N(logical), read, write
+
+16. 2 File System Basic
+- Goal: Performance + Reliability(신뢰성)
+- 파일은 3가지를 반드시 가지고 있다.
+1) File contents(data)
+2) File attributes(metadata): protection, owner, creation time, flag bit...
+3) File name
+- 매핑 문제: 데이터를 저장할 때 연속으로 배치하지 않아야 빈 공간이 부족해서 저장되지 않는 문제를 해결할 수 있다.
+- 참고로 파일을 삭제하면 file name과 metadata만 삭제. data는 마킹만 해 놓는다.
+- Unix Operations: creat, open, close, read, write...
+
+16. 3 Directories
+- 정의: speical metadata가 포함된 파일.
+- 목표: 파일을 체계적으로 정리하는 방법을 제공, 편리한 이름 인터페이스를 제공.
+- hierarchical directory system
+1) 다중 레벨 디렉토리를 지원한다.
+2) current directory(or working directory)를 지원한다.
+3) relative names(path): 상대경로, 현재 있는 디렉토리에서부터의 경로.
+4) absolute names(path): 절대경로, 루트에서부터의 경로.
+- directory = list of (file name, file attributes)
+- 일반적으로 순서가 정의되어 있지 않다.(effectively random)
+
+<pathname translation>
+- open ("/a/b/c", ...): /로 디렉토리 open, a를 검색하고 위치를 가져옴. -> 디렉토리 a를 열고, b를 검색하고, b의 위치를 가져옴 -> ... -> c파일 열기.
+- system은 경로를 찾는데 많은 시간을 소비한다. open이 읽기/쓰기와 분리된 이유.
+- OS는 접두사 조회를 통해 성능을 향상시키기도 한다.
+
+<directory operation>
+- 디렉토리도 file로 구현되어 있다. 그러므로 file operation을 directory에도 사용한다.
+- ex) opendir, readdir, seekdir, closedir
+
+<File System Mounting>
+- Mounting: 파일 시스템을 마운트해야 시스템의 프로세스에서 사용할 수 있다.
+window: 드라이브 문자(ex) C:\ D:\)
+unix: 기존 빈 디렉토리(= 마운트 지점)
+
+16. 4 File Sharing
+- timesharing 등장 이후 filesharing이 필요해졌다. 
+- filesharing은 작업완료에 매우 중요하다.
+통신 및 동기화의 기반 / 분산 시스템에서 파일은 네트워크에서 공유될 수 있음.
+- filesharing의 3가지 문제: concurrent access, lock을 활용한 concurrency control(동시 제어),protection
+
+<consistency semanitcs> = 일관성 의미
+- Unix: 열린 파일에 대한 쓰기는 파일을 동시에 연 사람에게 즉시 보낸다. (대부분)
+- AFS Session: 열린 파일에 대한 쓰기는 즉시 표시 X, 파일이 닫히면 변경 사항은 나중에 시작하는 session에서만 보인다.
+- Immutable-shared-file: 파일이 생성자에 의해 공유로 선언되면 수정할 수 없다.
+
+<file locking>
+- 전체 파일에 대한 잠금: int flock
+- 파일의 일부를 잠금: int fcntl
+POSIX record lock. 프로세스가 종료되면 잠금이 자동으로 제거된다.

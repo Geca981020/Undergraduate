@@ -1,0 +1,41 @@
+1chapter Data Communications
+1. 1 현대 기업을 위한 데이터 통신과 네트워킹
+<Technological Advancement Driving Forces(기술 진보 원동력)>
+1) 트래픽 증가
+- Traffic: 서버에 전송되는 데이터의 양.
+- Downstream Traffic: 인터넷 망에서 컴퓨터로 데이터를 가져오는 것.
+- bps(bit per second): 1초 동안 전송할 수 있는 비트의 수. 
+
+2) 새로운 서비스의 개발
+
+3) 기술 발전
+- Notable Trends
+a) 빠르고 저렴한 방향으로 진화한다.
+b) 오늘날의 네트워크는 이전보다 훨씬 지능적이다.
+c) IP상의 모든 것(everything over IP)으로 가는 이동은 지속될 것이다.
+- 인트라넷: 기업 내부의 격리된 시설에서 인터넷과 웹을 사용하는 것
+- 익스트라넷: 기업의 인트라넷을 인터넷으로 확장하여 선택된 사람들이 사설 데이터와 응용을 사용할 수 있게 하는 것
+d) 이동성의 증대
+
+<Changes in Networking Technology>
+1) Emenrgence of high-speed LANs(고속 LAN의 출현)
+- LAN의 요구사항을 변화시킨 중요한 트랜드 변화2가지
+컴퓨터의 속도와 성능의 폭발적인 성장, LAN을 필수적인 컴퓨터플랫폼으로 인식
+- 고속LAN이 필요한 이유
+Centralized Server Farms, Power Workgroup(정기적으로 데이터를 가져와 테스트),High speed local backbone
+ 
+2) Corporate WAN needs(기업의 WAN 수요)
+- 현재 PC와 지역 서버에 대한 의존성은 커졌지만, 중앙의 메인 시스템은 덜 사용되고 있다.
+- 업무 영역의 트래픽 80%는 그 주위에 머무르고, 20%는 넓은 지역으로 퍼진다.
+- 더 많은 데이터가 넓은 지역으로 배달되어야 한다는 것을 의미.
+
+3) Digital electronics(디지털 전자공학)
+- 소비자 전자공학이 디지털로 빠르게 전환함에 따라 인터넷과 인트라넷이 영향을 받음.
+- 정교한 신기술이 실현되고 확산됨에 따라 네트워크가 운반하는 비디오 트래픽이 증가.
+- ex) DVD
+
+<Convergence(융합)>
+- 과거의 장거리 전화와 정보 기술 및 시장의 통합
+1) Application: 통신 응용+비즈니스 응용 (유저관점)
+2) Enterprise Services: 관리자가 application을 제공하는 서비스 측면에서의 정보 네트워크
+3) Infrastructure: 기업에서 활동 가능한 통신 링크 ex) LAN, WAN
